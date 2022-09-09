@@ -1,3 +1,5 @@
+![Release](https://img.shields.io/badge/Release-1.0.0-blue)
+---
 ## 介绍
 一款部署在Vercel,基于Python-Flask框架,开发的短网址程序.
 ## 演示站
