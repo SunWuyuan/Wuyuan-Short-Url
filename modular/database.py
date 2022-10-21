@@ -66,9 +66,9 @@ class DataBase:
                 `domain` varchar(255) DEFAULT NULL,
                 `long_url` varchar(255) DEFAULT NULL,
                 `signature` varchar(255) DEFAULT NULL,
-                `valid_day` int(10) DEFAULT NULL,
-                `count` bigint(255) DEFAULT NULL,
-                `timestmap` int(10) DEFAULT NULL,
+                `valid_day` int(11) DEFAULT NULL,
+                `count` int(11) DEFAULT NULL,
+                `timestmap` int(11) DEFAULT NULL,
                 PRIMARY KEY (`id`) USING BTREE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         '''
