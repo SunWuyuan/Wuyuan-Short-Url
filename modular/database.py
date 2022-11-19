@@ -85,17 +85,17 @@ class DataBase:
         return id_
     
     def update(self, id_, signature):
-        sql = f'UPDATE {self.prefix}url SET signature = "{signature}" WHERE id = {id_}'
+        sql = f'UPDATE {self.prefix}url SET signature = "{signature}" WHERE id = {id_} LIMIT 1'
         self.cursor.execute(sql)
         self.connect.commit()
     
     def delete(self, id_):
-        sql = f'DELETE FROM {self.prefix}url WHERE id = "{id_}"'
+        sql = f'DELETE FROM {self.prefix}url WHERE id = "{id_}" LIMIT 1'
         self.cursor.execute(sql)
         self.connect.commit()
 
     def addCount(self, domain, signature):
-        sql = f'UPDATE {self.prefix}url SET count = count + 1 WHERE domain = "{domain}" AND signature = "{signature}"'
+        sql = f'UPDATE {self.prefix}url SET count = count + 1 WHERE domain = "{domain}" AND signature = "{signature}" LIMIT 1'
         self.cursor.execute(sql)
         self.connect.commit()
     

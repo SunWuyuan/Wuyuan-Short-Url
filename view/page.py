@@ -14,7 +14,7 @@ def generate():
     information = db.queryWebsiteInformation()
     return render_template(
         'generate.html',
-        title= information.get('title'),
+        title=information.get('title'),
         keyword=information.get('keyword'),
         description=information.get('description'),
         nowYear=datetime.datetime.now().year
