@@ -71,9 +71,6 @@ def get():
     parameter = core.getRequestParameter(request)
     type_ = parameter.get('type')
 
-    if type_ != 'domain' and type_ != 'url':
-        return core.generateResponseResult(100, '参数错误')
-
     if type_ == 'domain':
         db = database.DataBase()
         return core.generateResponseResult(200, db.queryDomain())
@@ -106,6 +103,8 @@ def get():
             'timestmap': query.get('timestmap')
         }
         return core.generateResponseResult(200, information)
+    else:
+        return core.generateResponseResult(100, '参数错误')
 
 @API_APP.route('/<signature>', methods=['GET', 'POST'])
 @API_APP.route('/<signature>/', methods=['GET', 'POST'])
