@@ -52,6 +52,7 @@ def generate():
         
         id_ = db.insert('custom', domain, longUrl, validDay)
         db.update(id_, signature)
+        
         return core.generateResponseResult(200, f'https://{domain}/{signature}')
     else:
         query = db.queryUrlByLongUrl(domain, longUrl)
@@ -64,6 +65,7 @@ def generate():
             signature += 'a'
             
         db.update(id_, signature)
+
         return core.generateResponseResult(200, f'https://{domain}/{signature}')
 
 @API_APP.route('/api/get', methods=['GET', 'POST'])
