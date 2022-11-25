@@ -24,7 +24,7 @@ def generate():
     if validDay:
         validDay = int(validDay)
         if validDay < 0 or validDay > 365:
-            return core.generateResponseResult(100, '仅能填0-365的数,0代表永久')
+            return core.generateResponseResult(100, '仅能填0~365,0代表永久')
     else:
         validDay = 0
     
@@ -45,7 +45,7 @@ def generate():
         elif not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
             return core.generateResponseResult(100, '特征码仅能为数字和字母')
         elif len(signature) < 1 or len(signature) > 5:
-            return core.generateResponseResult(100, '特征码长度仅能为1-5')
+            return core.generateResponseResult(100, '特征码长度仅能为1~5')
         
         if db.queryUrlBySignature(domain, signature):
             return core.generateResponseResult(200, '特征码已存在')
