@@ -43,10 +43,10 @@ def generate():
         elif signature.lower() == 'doc':
             return core.generateResponseResult(100, '特征码不能为doc')
         elif not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
-            return core.generateResponseResult(100, '特征码仅能填数字和字母')
+            return core.generateResponseResult(100, '特征码仅能为数字和字母')
         elif len(signature) < 1 or len(signature) > 5:
-            return core.generateResponseResult(100, '特征码长度只能为1-5')
-
+            return core.generateResponseResult(100, '特征码长度仅能为1-5')
+        
         if db.queryUrlBySignature(domain, signature):
             return core.generateResponseResult(200, '特征码已存在')
         
