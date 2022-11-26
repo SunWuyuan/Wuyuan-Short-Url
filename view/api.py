@@ -31,7 +31,7 @@ def generate():
     db = database.DataBase()
 
     if domain not in db.queryDomain():
-        return core.generateResponseResult(100, '域名不存在')
+        return core.generateResponseResult(100, '域名错误')
     
     if signature:
         if signature.lower() == 'api':
@@ -92,11 +92,11 @@ def get():
         db = database.DataBase()
 
         if domain not in db.queryDomain():
-            return core.generateResponseResult(200, '域名不存在')
+            return core.generateResponseResult(200, '域名错误')
 
         query = db.queryUrlBySignature(domain, signature)
         if not query:
-            return core.generateResponseResult(200, '特征码不存在')
+            return core.generateResponseResult(200, '特征码错误')
         
         information = {
             'longUrl': query.get('long_url'),
