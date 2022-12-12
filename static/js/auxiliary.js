@@ -1,5 +1,5 @@
 function isUrl(text) {
-    re = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/;
+    let re = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/;
     return re.test(text);
 }
 

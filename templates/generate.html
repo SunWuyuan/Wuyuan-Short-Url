@@ -35,29 +35,26 @@
             
             <script type="text/javascript">
                 $(document).ready(function() {
-                    let postData = {
-                        'type': 'domain',
-                    };
-                    axios.post('./api/get', postData)
+                    axios.get('./api/get_domain')
                         .then(function(response) {
-                            let data = response.data.information;
-                            let domain_element = new mdui.Select('#domain');
-                            for (let data_count = 0; data_count < data.length; data_count++) {
-                                $('#domain').append('<option>' + data[data_count] + '</option>');
+                            let information = response.data.information;
+                            let domainElement = new mdui.Select('#domain');
+                            for (let informationCount = 0; informationCount < information.length; informationCount++) {
+                                $('#domain').append('<option>' + information[informationCount] + '</option>');
                             }
-                            domain_element.handleUpdate();
+                            domainElement.handleUpdate();
                         });
                 });
 
                 function summit() {
-                    let load_element = load('正在生成');
+                    let loadElement = load('正在生成');
                     let domain = $('#domain option:selected').text();;
                     let longUrl = $('#longUrl').val();
                     let signature = $('#signature').val();
                     let validDay = $('#validDay').val();
                     
                     if (!domain || !longUrl) {
-                        load_element.remove();
+                        loadElement.remove();
 
                         mdui.alert('参数错误');
                         
@@ -65,7 +62,7 @@
                     }
 
                     if (!isUrl(longUrl)) {
-                        load_element.remove();
+                        loadElement.remove();
                         
                         mdui.alert('请输入完整长网址');
                         
@@ -76,22 +73,22 @@
                         'domain': domain,
                         'longUrl': longUrl,
                         'signature': signature,
-                        'validDay': validDay
+                        'validDay': Number(validDay)
                     };
                     axios.post('./api/generate', postData)
                         .then(function(response) {
-                            load_element.remove();
-                            let data = response.data.information;
-                            if (data.indexOf('https') == -1) {
-                                mdui.alert(data);
+                            loadElement.remove();
+                            let information = response.data.information;
+                            if (information.indexOf('https') == -1) {
+                                mdui.alert(information);
                             } else {
                                 mdui.dialog({
-                                    content: '短链接:' + data,
+                                    content: '短链接:' + information,
                                     buttons: [
                                         {
                                             text: '复制',
                                             onClick: function(inst){
-                                                copyText(data);
+                                                copyText(information);
                                                 mdui.snackbar({message: '复制成功'});
                                             }
                                         },

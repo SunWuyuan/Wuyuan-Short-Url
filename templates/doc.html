@@ -1,7 +1,38 @@
 {%include './head.html' %}
-            <h3>生成</h3>
+            <h3>获取域名</h3>
+
             <h4>请求</h4>
-            <p id="generate_api_url_text"></p>
+            <p id="getDomainApiUrlText"></p>
+            <p>方式: GET/POST</p>
+
+            <h4>响应</h4>
+            <p>格式: JSON</p>
+            <div class="mdui-table-fluid">
+                <table class="mdui-table mdui-table-hoverable">
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>state</td>
+                            <td>状态码</td>
+                        </tr>
+
+                        <tr>
+                            <td>information</td>
+                            <td>信息</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>生成</h3>
+
+            <h4>请求</h4>
+            <p id="generateApiUrlText"></p>
             <p>方式: GET/POST</p>
             <div class="mdui-table-fluid">
                 <table class="mdui-table mdui-table-hoverable">
@@ -39,6 +70,7 @@
                     </tbody>
                 </table>
             </div>
+
             <h4>响应</h4>
             <p>格式: JSON</p>
             <div class="mdui-table-fluid">
@@ -64,8 +96,9 @@
             </div>
 
             <h3>查询</h3>
+
             <h4>请求</h4>
-            <p id="get_api_url_text"></p>
+            <p id="getApiUrlText"></p>
             <p>方式: GET/POST</p>
             <div class="mdui-table-fluid">
                 <table class="mdui-table mdui-table-hoverable">
@@ -78,45 +111,16 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>type</td>
-                            <td>是</td>
-                            <td>类型,domain代表域名列表,url代表短网址信息</td>
-                        </tr>
-
-                        <tr>
                             <td>shortUrl</td>
-                            <td>否</td>
-                            <td>短网址,当type为url时必填</td>
+                            <td>是</td>
+                            <td>短网址</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
             <h4>响应</h4>
             <p>格式: JSON</p>
-            <h5>当type为domain时</h5>
-            <div class="mdui-table-fluid">
-                <table class="mdui-table mdui-table-hoverable">
-                    <thead>
-                        <tr>
-                            <th>参数名</th>
-                            <th>说明</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>state</td>
-                            <td>状态码</td>
-                        </tr>
-
-                        <tr>
-                            <td>information</td>
-                            <td>信息</td>
-                        </tr>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <h5>当type为url时</h5>
             <div class="mdui-table-fluid">
                 <table class="mdui-table mdui-table-hoverable">
                     <thead>
@@ -160,7 +164,8 @@
             </div>
 
             <script type="text/javascript">
-                document.getElementById('generate_api_url_text').innerHTML = '网址:' + window.location.origin + '/generate';
-                document.getElementById('get_api_url_text').innerHTML = '网址:' + window.location.origin + '/get';
+                document.getElementById('getDomainApiUrlText').innerHTML = '网址:' + window.location.origin + '/get_domain';
+                document.getElementById('generateApiUrlText').innerHTML = '网址:' + window.location.origin + '/generate';
+                document.getElementById('getApiUrlText').innerHTML = '网址:' + window.location.origin + '/get';
             </script>
 {%include './foot.html' %}

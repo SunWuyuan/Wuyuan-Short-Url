@@ -15,7 +15,7 @@ def generate():
     signature = parameter.get('signature')
     validDay = parameter.get('validDay')
 
-    if not domain or not longUrl or (validDay and validDay.isdigit()):
+    if not domain or not longUrl or (validDay and (type(validDay) == str and not validDay.isdigit())):
         return core.generateResponseResult(100, '参数错误')
     
     if not auxiliary.isUrl(longUrl):
@@ -68,45 +68,42 @@ def generate():
 
         return core.generateResponseResult(200, f'https://{domain}/{signature}')
 
+@API_APP.route('/api/get_domain', methods=['GET', 'POST'])
+def getDomain():
+    db = database.DataBase()
+    return core.generateResponseResult(200, db.queryDomain())
+
 @API_APP.route('/api/get', methods=['GET', 'POST'])
 def get():
     parameter = core.getRequestParameter(request)
-    type_ = parameter.get('type')
+    shortUrl = parameter.get('shortUrl')
 
-    if type_ == 'domain':
-        db = database.DataBase()
-        return core.generateResponseResult(200, db.queryDomain())
-    elif type_ == 'url':
-        shortUrl = parameter.get('shortUrl')
-
-        if not shortUrl:
-            return core.generateResponseResult(100, '参数错误')
-        
-        if not auxiliary.isUrl(shortUrl):
-            return core.generateResponseResult(100, '短网址需要完整')
-
-        shortUrl = shortUrl.split('/')
-        domain = shortUrl[2]
-        signature = shortUrl[3]
-
-        db = database.DataBase()
-
-        if domain not in db.queryDomain():
-            return core.generateResponseResult(200, '域名错误')
-
-        query = db.queryUrlBySignature(domain, signature)
-        if not query:
-            return core.generateResponseResult(200, '特征码错误')
-        
-        information = {
-            'longUrl': query.get('long_url'),
-            'validTime': query.get('valid_time'),
-            'count': query.get('count'),
-            'timestmap': query.get('timestmap')
-        }
-        return core.generateResponseResult(200, information)
-    else:
+    if not shortUrl:
         return core.generateResponseResult(100, '参数错误')
+    
+    if not auxiliary.isUrl(shortUrl):
+        return core.generateResponseResult(100, '短网址需要完整')
+
+    shortUrl = shortUrl.split('/')
+    domain = shortUrl[2]
+    signature = shortUrl[3]
+
+    db = database.DataBase()
+
+    if domain not in db.queryDomain():
+        return core.generateResponseResult(200, '短网址错误')
+
+    query = db.queryUrlBySignature(domain, signature)
+    if not query:
+        return core.generateResponseResult(200, '短网址错误')
+    
+    information = {
+        'longUrl': query.get('long_url'),
+        'validDay': query.get('valid_day'),
+        'count': query.get('count'),
+        'timestmap': query.get('timestmap')
+    }
+    return core.generateResponseResult(200, information)
 
 @API_APP.route('/<signature>', methods=['GET', 'POST'])
 @API_APP.route('/<signature>/', methods=['GET', 'POST'])

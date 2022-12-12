@@ -41,17 +41,22 @@
                     }
 
                     let postData = {
-                        'type': 'url',
                         'shortUrl': shortUrl
                     };
                     axios.post('./api/get', postData)
                         .then(function(response) {
-                            let data = response.data.information;
+                            let information = response.data.information;
                             load_element.remove();
                             if (typeof data == "string") {
                                 mdui.alert(data);
                             } else {
-                                mdui.alert('长链接:' + data.long_url + '<br/>有效期:' + data.valid_time + '<br/>次数:' + data.count + '<br/>时间:' + timestampToTime(data.timestmap));
+                                let validDay = information.validDay;
+                                if (validDay === 0) {
+                                    validDay = '永久';
+                                } else {
+                                    validDay += '天';
+                                }
+                                mdui.alert('长链接:' + information.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + information.count + '<br/>时间:' + timestampToTime(information.timestmap));
                             }
                         });
                     
