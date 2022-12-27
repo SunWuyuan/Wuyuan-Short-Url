@@ -11,35 +11,35 @@ PAGE_APP = Blueprint('PAGE_APP', __name__)
 @PAGE_APP.route('/', methods=['GET', 'POST'])
 def generate():
     db = database.DataBase()
-    information = db.queryWebsiteInformation()
+    info = db.queryWebsiteInfo()
     return render_template(
         'generate.html',
-        title=information.get('title'),
-        keyword=information.get('keyword'),
-        description=information.get('description'),
+        title=info.get('title'),
+        keyword=info.get('keyword'),
+        description=info.get('description'),
         nowYear=datetime.datetime.now().year
     )
 
 @PAGE_APP.route('/query', methods=['GET', 'POST'])
 def query():
     db = database.DataBase()
-    information = db.queryWebsiteInformation()
+    info = db.queryWebsiteInfo()
     return render_template(
         'query.html',
-        title= information.get('title'),
-        keyword=information.get('keyword'),
-        description=information.get('description'),
+        title= info.get('title'),
+        keyword=info.get('keyword'),
+        description=info.get('description'),
         nowYear=datetime.datetime.now().year
     )
 
 @PAGE_APP.route('/doc', methods=['GET', 'POST'])
 def doc():
     db = database.DataBase()
-    information = db.queryWebsiteInformation()
+    info = db.queryWebsiteInfo()
     return render_template(
         'doc.html',
-        title= information.get('title'),
-        keyword=information.get('keyword'),
-        description=information.get('description'),
+        title= info.get('title'),
+        keyword=info.get('keyword'),
+        description=info.get('description'),
         nowYear=datetime.datetime.now().year
     )

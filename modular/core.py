@@ -5,21 +5,21 @@ from flask import make_response
 import json
 
 def getRequestParameter(request):
-    data = {}
+    parameters = {}
     if request.method == 'GET':
-        data = request.args
+        parameters = request.args
     elif request.method == 'POST':
-        data = request.form
-        if not data:
-            data = request.get_json()
-    return dict(data)
+        parameters = request.form
+        if not parameters:
+            parameters = request.get_json()
+    return dict(parameters)
 
-def generateResponseResult(state, information):
-    data = {
+def generateResponseResult(state, info):
+    result = {
         'state': state,
-        'information': information
+        'info': info
     }
-    data = json.dumps(data, ensure_ascii=False)
-    response = make_response(data)
+    result = json.dumps(result, ensure_ascii=False)
+    response = make_response(result)
     response.mimetype = 'application/json; charset=utf-8'
     return response

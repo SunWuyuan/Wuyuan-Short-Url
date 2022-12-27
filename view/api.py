@@ -97,13 +97,13 @@ def get():
     if not query:
         return core.generateResponseResult(200, '短网址错误')
     
-    information = {
+    info = {
         'longUrl': query.get('long_url'),
         'validDay': query.get('valid_day'),
         'count': query.get('count'),
         'timestmap': query.get('timestmap')
     }
-    return core.generateResponseResult(200, information)
+    return core.generateResponseResult(200, info)
 
 @API_APP.route('/<signature>', methods=['GET', 'POST'])
 @API_APP.route('/<signature>/', methods=['GET', 'POST'])

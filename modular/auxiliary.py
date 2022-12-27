@@ -11,11 +11,11 @@ def base62Encode(number):
     alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     if number == 0:
         return alphabet[0]
-    arr = []
+    infos = []
     base = len(alphabet)
     while number:
         rem = number % base
         number = number // base
-        arr.append(alphabet[rem])
-    arr.reverse()
-    return ''.join(arr)
+        infos.append(alphabet[rem])
+    infos.reverse()
+    return ''.join(infos)

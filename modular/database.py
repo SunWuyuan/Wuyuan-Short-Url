@@ -147,7 +147,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
     
-    def queryWebsiteInformation(self):
+    def queryWebsiteInfo(self):
         sql = f'''
             SELECT
                 * 
@@ -161,10 +161,10 @@ class DataBase:
         '''
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        information = {}
+        info = {}
         for dataItem in data:
-            information[dataItem.get('key_')] = dataItem.get('value_')
-        return information
+            info[dataItem.get('key_')] = dataItem.get('value_')
+        return info
 
     def queryDomain(self):
         sql = f'''

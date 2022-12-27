@@ -37,12 +37,12 @@
                 $(document).ready(function() {
                     axios.get('./api/get_domain')
                         .then(function(response) {
-                            let information = response.data.information;
-                            let domainElement = new mdui.Select('#domain');
-                            for (let informationCount = 0; informationCount < information.length; informationCount++) {
-                                $('#domain').append('<option>' + information[informationCount] + '</option>');
+                            let infos = response.data.info;
+                            let element = new mdui.Select('#domain');
+                            for (let infosCount = 0; infosCount < infos.length; infosCount++) {
+                                $('#domain').append('<option>' + infos[infoCount] + '</option>');
                             }
-                            domainElement.handleUpdate();
+                            element.handleUpdate();
                         });
                 });
 
@@ -78,17 +78,17 @@
                     axios.post('./api/generate', postData)
                         .then(function(response) {
                             loadElement.remove();
-                            let information = response.data.information;
-                            if (information.indexOf('https') == -1) {
-                                mdui.alert(information);
+                            let info = response.data.info;
+                            if (info.indexOf('https') == -1) {
+                                mdui.alert(info);
                             } else {
                                 mdui.dialog({
-                                    content: '短链接:' + information,
+                                    content: '短链接:' + info,
                                     buttons: [
                                         {
                                             text: '复制',
                                             onClick: function(inst){
-                                                copyText(information);
+                                                copyText(info);
                                                 mdui.snackbar({message: '复制成功'});
                                             }
                                         },

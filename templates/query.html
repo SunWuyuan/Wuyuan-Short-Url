@@ -21,11 +21,11 @@
 
             <script type="text/javascript">
                 function summit() {
-                    let load_element = load('正在查询');
+                    let loadElement = load('正在查询');
                     let shortUrl = $('#shortUrl').val();
                     
                     if (!shortUrl) {
-                        load_element.remove();
+                        loadElement.remove();
 
                         mdui.alert('参数错误');
                         
@@ -33,7 +33,7 @@
                     }
 
                     if (!isUrl(shortUrl)) {
-                        load_element.remove();
+                        loadElement.remove();
 
                         mdui.alert('请输入完整短网址');
                         
@@ -45,18 +45,18 @@
                     };
                     axios.post('./api/get', postData)
                         .then(function(response) {
-                            let information = response.data.information;
-                            load_element.remove();
+                            let info = response.data.info;
+                            loadElement.remove();
                             if (typeof data == "string") {
                                 mdui.alert(data);
                             } else {
-                                let validDay = information.validDay;
+                                let validDay = info.validDay;
                                 if (validDay === 0) {
                                     validDay = '永久';
                                 } else {
                                     validDay += '天';
                                 }
-                                mdui.alert('长链接:' + information.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + information.count + '<br/>时间:' + timestampToTime(information.timestmap));
+                                mdui.alert('长链接:' + info.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + info.count + '<br/>时间:' + timestampToTime(info.timestmap));
                             }
                         });
                     
