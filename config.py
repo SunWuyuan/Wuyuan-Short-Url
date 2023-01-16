@@ -27,7 +27,7 @@ else:
         'port': 3306,
         'username': 'root',
         'password': 'root',
-        'databaseName': 'databaseName',
+        'name': 'name',
         'prefix': 'h2o_short_url_',
         'ssl': {
             'caPath': '',
