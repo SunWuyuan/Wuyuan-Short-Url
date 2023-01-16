@@ -14,10 +14,10 @@ class DataBase:
             port=int(config.DATABASE.get('port')),
             user=config.DATABASE.get('username'),
             passwd=config.DATABASE.get('password'),
-            db=config.DATABASE.get('database_name'),
-            ssl_ca=config.DATABASE.get('ssl').get('ca_path'),
-            ssl_key=config.DATABASE.get('ssl').get('key_path'),
-            ssl_cert=config.DATABASE.get('ssl').get('cert_path')
+            db=config.DATABASE.get('databaseName'),
+            ssl_ca=config.DATABASE.get('ssl').get('caPath'),
+            ssl_key=config.DATABASE.get('ssl').get('keyPath'),
+            ssl_cert=config.DATABASE.get('ssl').get('certPath')
         )
         self.cursor = self.connect.cursor(pymysql.cursors.DictCursor)
 

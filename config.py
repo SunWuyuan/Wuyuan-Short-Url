@@ -5,15 +5,15 @@ HOST = '0.0.0.0'
 PORT = 5000
 PLATFORM = 'vercel'
 DATABASE = {
-    'host': '121.4.52.251',
+    'host': '127.0.0.1',
     'port': 3306,
-    'username': 'h2o_short_url',
-    'password': 'xhxd6Fip7ZcdhmG4',
-    'database_name': 'h2o_short_url',
+    'username': 'root',
+    'password': 'root',
+    'databaseName': 'databaseName',
     'prefix': 'h2o_short_url_',
     'ssl': {
-        'ca_path': '',
-        'key_path': '',
-        'cert_path': ''
+        'caPath': '',
+        'keyPath': '',
+        'certPath': ''
     }
 }
