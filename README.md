@@ -14,7 +14,7 @@
 如果需要在Windows/Linux上部署,Windows运行main.py,Linux执行gunicorn main:app -c gunicorn.py.
 ### 自动
 Vecel|Netlify
----|---|---
+---|---
 [![Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/H2Oa/H2O_Short_Url)|[![Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/H2Oa/H2O_Short_Url)
 ## 安装
 ### 手动
