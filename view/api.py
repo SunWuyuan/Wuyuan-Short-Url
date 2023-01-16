@@ -32,7 +32,7 @@ def generate():
     if domain not in domains:
         return core.GenerateResponseResult().error(110, '域名错误')
     
-    if config.PLATFORM in ['vercel', 'deta', 'netlify']:
+    if config.AUTOMATIC:
         protocol = 'https'
     else:
         protocol = domains.get(domain)
