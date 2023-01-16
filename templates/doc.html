@@ -7,23 +7,83 @@
 
             <h4>响应</h4>
             <p>格式: JSON</p>
-            <div class="mdui-table-fluid">
+            <div class="mdui-tab" mdui-tab>
+                <a href="#getDomainApiResponse200" class="mdui-ripple">成功(200)</a>
+                <a href="#getDomainApiResponse110" class="mdui-ripple">参数错误(110)</a>
+                <a href="#getDomainApiResponse500" class="mdui-ripple">未知错误(500)</a>
+            </div>
+            <div id="getDomainApiResponse200" class="mdui-p-a-2">
+                <div class="mdui-table-fluid">
+                    <table class="mdui-table mdui-table-hoverable">
+                        <thead>
+                            <tr>
+                                <th>参数名</th>
+                                <th>中文名</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>code</td>
+                                <td>状态码</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>message</td>
+                                <td>消息</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>data</td>
+                                <td>数据</td>
+                                <td>域名</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="getDomainApiResponse110" class="mdui-p-a-2">
                 <table class="mdui-table mdui-table-hoverable">
                     <thead>
                         <tr>
                             <th>参数名</th>
-                            <th>说明</th>
+                            <th>中文名</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>state</td>
+                            <td>code</td>
                             <td>状态码</td>
                         </tr>
 
                         <tr>
-                            <td>info</td>
-                            <td>信息</td>
+                            <td>message</td>
+                            <td>消息</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="getDomainApiResponse500" class="mdui-p-a-2">
+                <table class="mdui-table mdui-table-hoverable">
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>中文名</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>code</td>
+                            <td>状态码</td>
+                        </tr>
+
+                        <tr>
+                            <td>message</td>
+                            <td>消息</td>
                         </tr>
                     </tbody>
                 </table>
@@ -40,6 +100,7 @@
                         <tr>
                             <th>参数名</th>
                             <th>必填</th>
+                            <th>中文名</th>
                             <th>说明</th>
                         </tr>
                     </thead>
@@ -47,25 +108,29 @@
                         <tr>
                             <td>domain</td>
                             <td>是</td>
-                            <td>短网址的域名</td>
+                            <td>域名</td>
+                            <td></td>
                         </tr>
 
                         <tr>
                             <td>longUrl</td>
                             <td>是</td>
                             <td>长网址</td>
+                            <td></td>
                         </tr>
 
                         <tr>
                             <td>signature</td>
                             <td>否</td>
-                            <td>特征码,仅能填1~5位的数字和字母</td>
+                            <td>特征码</td>
+                            <td>仅能填1~5位的数字和字母</td>
                         </tr>
 
                         <tr>
                             <td>validDay</td>
                             <td>否</td>
-                            <td>有效期,单位天,仅能填0~365,0代表永久,默认为0</td>
+                            <td>有效期</td>
+                            <td>单位天,仅能填0~365,0代表永久,默认为0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -73,23 +138,83 @@
 
             <h4>响应</h4>
             <p>格式: JSON</p>
-            <div class="mdui-table-fluid">
+            <div class="mdui-tab" mdui-tab>
+                <a href="#generateApiResponse200" class="mdui-ripple">成功(200)</a>
+                <a href="#generateApiResponse110" class="mdui-ripple">参数错误(110)</a>
+                <a href="#generateApiResponse500" class="mdui-ripple">未知错误(500)</a>
+            </div>
+            <div id="generateApiResponse200" class="mdui-p-a-2">
+                <div class="mdui-table-fluid">
+                    <table class="mdui-table mdui-table-hoverable">
+                        <thead>
+                            <tr>
+                                <th>参数名</th>
+                                <th>中文名</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>code</td>
+                                <td>状态码</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>message</td>
+                                <td>消息</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>data</td>
+                                <td>数据</td>
+                                <td>短网址</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="generateApiResponse110" class="mdui-p-a-2">
                 <table class="mdui-table mdui-table-hoverable">
                     <thead>
                         <tr>
                             <th>参数名</th>
-                            <th>说明</th>
+                            <th>中文名</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>state</td>
+                            <td>code</td>
                             <td>状态码</td>
                         </tr>
 
                         <tr>
-                            <td>info</td>
-                            <td>信息</td>
+                            <td>message</td>
+                            <td>消息</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="generateApiResponse500" class="mdui-p-a-2">
+                <table class="mdui-table mdui-table-hoverable">
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>中文名</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>code</td>
+                            <td>状态码</td>
+                        </tr>
+
+                        <tr>
+                            <td>message</td>
+                            <td>消息</td>
                         </tr>
                     </tbody>
                 </table>
@@ -106,7 +231,7 @@
                         <tr>
                             <th>参数名</th>
                             <th>必填</th>
-                            <th>说明</th>
+                            <th>中文名</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,43 +246,99 @@
 
             <h4>响应</h4>
             <p>格式: JSON</p>
-            <div class="mdui-table-fluid">
+            <div class="mdui-tab" mdui-tab>
+                <a href="#getApiResponse200" class="mdui-ripple">成功(200)</a>
+                <a href="#getApiResponse110" class="mdui-ripple">参数错误(110)</a>
+                <a href="#getApiResponse500" class="mdui-ripple">未知错误(500)</a>
+            </div>
+            <div id="getApiResponse200" class="mdui-p-a-2">
+                <div class="mdui-table-fluid">
+                    <table class="mdui-table mdui-table-hoverable">
+                        <thead>
+                            <tr>
+                                <th>参数名</th>
+                                <th>中文名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>code</td>
+                                <td>状态码</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>message</td>
+                                <td>消息</td>
+                            </tr>
+
+                            <tr>
+                                <td>data</td>
+                                <td>数据</td>
+                            </tr>
+
+                            <tr>
+                                <td>longUrl</td>
+                                <td>长网址</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>validTime</td>
+                                <td>有效期</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>count</td>
+                                <td>次数</td>
+                            </tr>
+
+                            <tr>
+                                <td>timestmap</td>
+                                <td>时间戳</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="getApiResponse110" class="mdui-p-a-2">
                 <table class="mdui-table mdui-table-hoverable">
                     <thead>
                         <tr>
                             <th>参数名</th>
-                            <th>说明</th>
+                            <th>中文名</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>state</td>
+                            <td>code</td>
                             <td>状态码</td>
                         </tr>
 
                         <tr>
-                            <td>info</td>
-                            <td>信息</td>
+                            <td>message</td>
+                            <td>消息</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="getApiResponse500" class="mdui-p-a-2">
+                <table class="mdui-table mdui-table-hoverable">
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>中文名</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>code</td>
+                            <td>状态码</td>
                         </tr>
 
                         <tr>
-                            <td>longUrl</td>
-                            <td>长网址</td>
-                        </tr>
-
-                        <tr>
-                            <td>validTime</td>
-                            <td>有效期</td>
-                        </tr>
-
-                        <tr>
-                            <td>count</td>
-                            <td>次数</td>
-                        </tr>
-
-                        <tr>
-                            <td>timestmap</td>
-                            <td>时间戳</td>
+                            <td>message</td>
+                            <td>消息</td>
                         </tr>
                     </tbody>
                 </table>

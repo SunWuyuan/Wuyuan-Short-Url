@@ -3,6 +3,7 @@
 
 from flask import Blueprint, redirect, request
 from modular import core, auxiliary, database
+import config
 import time
 
 API_APP = Blueprint('API_APP', __name__)
@@ -13,65 +14,66 @@ def generate():
     domain = parameter.get('domain')
     longUrl = parameter.get('longUrl')
     signature = parameter.get('signature')
-    validDay = parameter.get('validDay')
+    validDay = parameter.get('validDay') or 0
 
     if not domain or not longUrl or (validDay and (type(validDay) == str and not validDay.isdigit())):
-        return core.generateResponseResult(100, '参数错误')
-    
-    if not auxiliary.isUrl(longUrl):
-        return core.generateResponseResult(100, '长网址需完整')
-
-    if validDay:
+        return core.GenerateResponseResult().error(110, '参数错误')
+    elif not auxiliary.isUrl(longUrl):
+        return core.GenerateResponseResult().error(110, '长网址需完整')
+    elif validDay:
         validDay = int(validDay)
         if validDay < 0 or validDay > 365:
-            return core.generateResponseResult(100, '仅能填0~365,0代表永久')
-    else:
-        validDay = 0
+            return core.GenerateResponseResult().error(110, '仅能填0~365,0代表永久')
     
     db = database.DataBase()
 
-    if domain not in db.queryDomain():
-        return core.generateResponseResult(100, '域名错误')
+    domains = db.queryDomain()
+
+    if domain not in domains:
+        return core.GenerateResponseResult().error(110, '域名错误')
     
+    if config.PLATFORM in ['vercel', 'deta', 'netlify']:
+        protocol = 'https'
+    else:
+        protocol = domains.get(domain)
+
     if signature:
-        if signature.lower() == 'api':
-            return core.generateResponseResult(100, '特征码不能为api')
-        elif signature.lower() == 'index':
-            return core.generateResponseResult(100, '特征码不能为index')
-        elif signature.lower() == 'query':
-            return core.generateResponseResult(100, '特征码不能为query')
-        elif signature.lower() == 'doc':
-            return core.generateResponseResult(100, '特征码不能为doc')
-        elif not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
-            return core.generateResponseResult(100, '特征码仅能为数字和字母')
+        if not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
+            return core.GenerateResponseResult().error(110, '特征码仅能为数字和字母')
         elif len(signature) < 1 or len(signature) > 5:
-            return core.generateResponseResult(100, '特征码长度仅能为1~5')
-        
-        if db.queryUrlBySignature(domain, signature):
-            return core.generateResponseResult(200, '特征码已存在')
+            return core.GenerateResponseResult().error(110, '特征码长度仅能为1~5')
+        elif signature.lower() == 'api':
+            return core.GenerateResponseResult().error(110, '特征码不能为api')
+        elif signature.lower() == 'index':
+            return core.GenerateResponseResult().error(110, '特征码不能为index')
+        elif signature.lower() == 'query':
+            return core.GenerateResponseResult().error(110, '特征码不能为query')
+        elif signature.lower() == 'doc':
+            return core.GenerateResponseResult().error(110, '特征码不能为doc')
+        elif db.queryUrlBySignature(domain, signature):
+            return core.GenerateResponseResult().error(110, '特征码已存在')
         
         id_ = db.insert('custom', domain, longUrl, validDay)
         db.update(id_, signature)
-        
-        return core.generateResponseResult(200, f'https://{domain}/{signature}')
+
+        return core.GenerateResponseResult().success(f'{protocol}://{domain}/{signature}')
     else:
         query = db.queryUrlByLongUrl(domain, longUrl)
         if query:
-            return core.generateResponseResult(200, f'https://{domain}/{query.get("signature")}')
+            return core.GenerateResponseResult().success(f'{protocol}://{domain}/{query.get("signature")}')
         
         id_ = db.insert('system', domain, longUrl, validDay)
         signature = auxiliary.base62Encode(id_)
         if db.queryUrlBySignature(domain, signature):
             signature += 'a'
-            
         db.update(id_, signature)
 
-        return core.generateResponseResult(200, f'https://{domain}/{signature}')
+        return core.GenerateResponseResult().success(f'{protocol}://{domain}/{signature}')
 
 @API_APP.route('/api/get_domain', methods=['GET', 'POST'])
 def getDomain():
     db = database.DataBase()
-    return core.generateResponseResult(200, db.queryDomain())
+    return core.GenerateResponseResult().success(list(db.queryDomain().keys()))
 
 @API_APP.route('/api/get', methods=['GET', 'POST'])
 def get():
@@ -79,10 +81,9 @@ def get():
     shortUrl = parameter.get('shortUrl')
 
     if not shortUrl:
-        return core.generateResponseResult(100, '参数错误')
-    
-    if not auxiliary.isUrl(shortUrl):
-        return core.generateResponseResult(100, '短网址需要完整')
+        return core.GenerateResponseResult().error(110, '参数错误')
+    elif not auxiliary.isUrl(shortUrl):
+        return core.GenerateResponseResult().error(110, '短网址需要完整')
 
     shortUrl = shortUrl.split('/')
     domain = shortUrl[2]
@@ -91,11 +92,10 @@ def get():
     db = database.DataBase()
 
     if domain not in db.queryDomain():
-        return core.generateResponseResult(200, '短网址错误')
-
+        return core.GenerateResponseResult().error(110, '短网址错误')
     query = db.queryUrlBySignature(domain, signature)
     if not query:
-        return core.generateResponseResult(200, '短网址错误')
+        return core.GenerateResponseResult().error(110, '短网址错误')
     
     info = {
         'longUrl': query.get('long_url'),
@@ -103,15 +103,12 @@ def get():
         'count': query.get('count'),
         'timestmap': query.get('timestmap')
     }
-    return core.generateResponseResult(200, info)
+    return core.GenerateResponseResult().success(info)
 
 @API_APP.route('/<signature>', methods=['GET', 'POST'])
 @API_APP.route('/<signature>/', methods=['GET', 'POST'])
 def shortUrlRedirect(signature):
     db = database.DataBase()
-
-    if request.host not in db.queryDomain():
-        return redirect(request.host_url)
     
     query = db.queryUrlBySignature(request.host, signature)
     if query:

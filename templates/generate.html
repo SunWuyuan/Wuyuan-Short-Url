@@ -35,36 +35,25 @@
             
             <script type="text/javascript">
                 $(document).ready(function() {
-                    axios.get('./api/get_domain')
+                    request('get', './api/get_domain')
                         .then(function(response) {
-                            let infos = response.data.info;
+                            let data = response.data.data;
                             let element = new mdui.Select('#domain');
-                            for (let infosCount = 0; infosCount < infos.length; infosCount++) {
-                                $('#domain').append('<option>' + infos[infosCount] + '</option>');
+                            for (let dataCount = 0; dataCount < data.length; dataCount++) {
+                                $('#domain').append('<option>' + data[dataCount] + '</option>');
                             }
                             element.handleUpdate();
                         });
                 });
 
                 function summit() {
-                    let loadElement = load('正在生成');
                     let domain = $('#domain option:selected').text();;
                     let longUrl = $('#longUrl').val();
                     let signature = $('#signature').val();
                     let validDay = $('#validDay').val();
                     
                     if (!domain || !longUrl) {
-                        loadElement.remove();
-
-                        mdui.alert('参数错误');
-                        
-                        return false;
-                    }
-
-                    if (!isUrl(longUrl)) {
-                        loadElement.remove();
-                        
-                        mdui.alert('请输入完整长网址');
+                        mdui.alert('参数不能为空');
                         
                         return false;
                     }
@@ -75,20 +64,17 @@
                         'signature': signature,
                         'validDay': Number(validDay)
                     };
-                    axios.post('./api/generate', postData)
+                    request('post', './api/generate', postData)
                         .then(function(response) {
-                            loadElement.remove();
-                            let info = response.data.info;
-                            if (info.indexOf('https') == -1) {
-                                mdui.alert(info);
-                            } else {
+                            let data = response.data;
+                            if (data.code === 200) {
                                 mdui.dialog({
-                                    content: '短链接:' + info,
+                                    content: '短链接:' + data.data,
                                     buttons: [
                                         {
                                             text: '复制',
                                             onClick: function(inst){
-                                                copyText(info);
+                                                copyText(data.data);
                                                 mdui.snackbar({message: '复制成功'});
                                             }
                                         },
@@ -97,6 +83,8 @@
                                         }
                                     ]
                                 });
+                            } else {
+                                mdui.alert(data.message);
                             }
                         });
                     

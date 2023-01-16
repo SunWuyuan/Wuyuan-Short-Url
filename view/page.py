@@ -7,7 +7,6 @@ import datetime
 
 PAGE_APP = Blueprint('PAGE_APP', __name__)
 
-@PAGE_APP.route('/generate', methods=['GET', 'POST'])
 @PAGE_APP.route('/', methods=['GET', 'POST'])
 def generate():
     db = database.DataBase()

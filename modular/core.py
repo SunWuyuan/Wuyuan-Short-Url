@@ -5,21 +5,43 @@ from flask import make_response
 import json
 
 def getRequestParameter(request):
-    parameters = {}
+    data = {}
     if request.method == 'GET':
-        parameters = request.args
+        data = request.args
     elif request.method == 'POST':
-        parameters = request.form
-        if not parameters:
-            parameters = request.get_json()
-    return dict(parameters)
+        data = request.form
+        if not data:
+            data = request.get_json()
+    return dict(data)
 
-def generateResponseResult(state, info):
-    result = {
-        'state': state,
-        'info': info
-    }
-    result = json.dumps(result, ensure_ascii=False)
-    response = make_response(result)
-    response.mimetype = 'application/json; charset=utf-8'
-    return response
+class GenerateResponseResult:
+    def __init__(self):
+        pass
+
+    def error(self, code, message):
+        result = {
+            'code': code,
+            'message': message
+        }
+        self.result = result
+        return self._json()
+
+    def success(self, data):
+        result = {
+            'code': 200,
+            'message': '成功',
+            'data': data
+        }
+        self.result = result
+        return self._json()
+    
+    def _json(self):
+        result = json.dumps(self.result)
+        response = make_response(result)
+        response.mimetype = 'application/json; charset=utf-8'
+        return response
+    
+    def custom(self, contentType, data):
+        response = make_response(data)
+        response.headers['Content-Type'] = contentType
+        return response

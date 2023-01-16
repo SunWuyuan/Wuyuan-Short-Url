@@ -1,3 +1,6 @@
+gunicorn
+gevent
+Frozen-Flask
 flask
 flask_cors
 pymysql

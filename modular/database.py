@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-import os
+import config
 import pymysql
 import re
 import time
 
 class DataBase:
     def __init__(self):
-        '''
-        config = {
-            'HOST': '127.0.0.1',
-            'PORT': 3306,
-            'USERNAME': 'root',
-            'PASSWORD': 'root',
-            'DATABASE_NAME': 'db',
-            'prefix': 'h2o_short_url_'
-        }
-        self.prefix = config.get('prefix')
-        self.connect = pymysql.connect(host=config.get('HOST'), port=config.get('PORT'), user=config.get('USERNAME'), passwd=config.get('PASSWORD'), db=config.get('DATABASE_NAME'))
-        '''
-        self.prefix = os.environ.get('PREFIX')
-        self.connect = pymysql.connect(host=os.environ.get('HOST'), port=int(os.environ.get('PORT')), user=os.environ.get('USERNAME'), passwd=os.environ.get('PASSWORD'), db=os.environ.get('DATABASE_NAME'))
+        self.prefix = config.DATABASE.get('prefix')
+        self.connect = pymysql.connect(
+            host=config.DATABASE.get('host'),
+            port=int(config.DATABASE.get('port')),
+            user=config.DATABASE.get('username'),
+            passwd=config.DATABASE.get('password'),
+            db=config.DATABASE.get('database_name'),
+            ssl_ca=config.DATABASE.get('ssl').get('ca_path'),
+            ssl_key=config.DATABASE.get('ssl').get('key_path'),
+            ssl_cert=config.DATABASE.get('ssl').get('cert_path')
+        )
         self.cursor = self.connect.cursor(pymysql.cursors.DictCursor)
 
     def __del__(self):
@@ -70,14 +67,16 @@ class DataBase:
         '''
         self.cursor.execute(sql)
         self.connect.commit()
+
+    def createDomainTable(self):
         sql = f'''
-            INSERT INTO `{self.prefix}core` (key_, value_)
-            VALUES(
-                "domain", ""
-            );
+            CREATE TABLE `{self.prefix}domain` (
+                `domain` varchar(255) NOT NULL,
+                `protocol` varchar(255) DEFAULT NULL,
+                PRIMARY KEY (`domain`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         '''
         self.cursor.execute(sql)
-        self.connect.commit()
 
     def createUrlTable(self):
         sql = f'''
@@ -161,26 +160,24 @@ class DataBase:
         '''
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        info = {}
-        for dataItem in data:
-            info[dataItem.get('key_')] = dataItem.get('value_')
-        return info
+        data_ = {}
+        for datum in data:
+            data_[datum.get('key_')] = datum.get('value_')
+        return data_
 
     def queryDomain(self):
         sql = f'''
             SELECT
                 * 
             FROM
-                {self.prefix}core 
-            WHERE
-                key_ = "domain" 
-            LIMIT 1;
+                {self.prefix}domain;
         '''
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        data = data[0].get('value_')
-        data = data.split(',')
-        return data
+        data_ = {}
+        for datum in data:
+            data_[datum.get('domain')] = datum.get('protocol')
+        return data_
 
     def queryUrlByLongUrl(self, domain, longUrl):
         sql = f'''

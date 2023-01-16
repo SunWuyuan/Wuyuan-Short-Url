@@ -21,21 +21,10 @@
 
             <script type="text/javascript">
                 function summit() {
-                    let loadElement = load('正在查询');
                     let shortUrl = $('#shortUrl').val();
                     
                     if (!shortUrl) {
-                        loadElement.remove();
-
-                        mdui.alert('参数错误');
-                        
-                        return false;
-                    }
-
-                    if (!isUrl(shortUrl)) {
-                        loadElement.remove();
-
-                        mdui.alert('请输入完整短网址');
+                        mdui.alert('参数不能为空');
                         
                         return false;
                     }
@@ -43,20 +32,20 @@
                     let postData = {
                         'shortUrl': shortUrl
                     };
-                    axios.post('./api/get', postData)
+                    request('post', './api/get', postData)
                         .then(function(response) {
-                            let info = response.data.info;
-                            loadElement.remove();
-                            if (typeof data == "string") {
-                                mdui.alert(data);
-                            } else {
-                                let validDay = info.validDay;
+                            let data = response.data;
+                            if (data.code === 200) {
+                                let data_ = data.data;
+                                let validDay = data_.validDay;
                                 if (validDay === 0) {
                                     validDay = '永久';
                                 } else {
                                     validDay += '天';
                                 }
-                                mdui.alert('长链接:' + info.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + info.count + '<br/>时间:' + timestampToTime(info.timestmap));
+                                mdui.alert('长链接:' + data_.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + data_.count + '<br/>时间:' + timestampToTime(data_.timestmap));
+                            } else {
+                                mdui.alert(data.message);
                             }
                         });
                     

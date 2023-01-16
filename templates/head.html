@@ -5,6 +5,7 @@
         <title>{{ title }}</title>
         <meta name="keywords" content="{{ keyword }}">
         <meta name="description" content="{{ description }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" />
         <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css"/>
@@ -31,8 +32,9 @@
                     </svg>
                 </a>
             </div>
+            
             <div id="nav" class="mdui-tab mdui-color-indigo">
-                <a id="generate" href="./generate" class="mdui-ripple mdui-ripple-white">生成</a>
+                <a id="generate" href="./" class="mdui-ripple mdui-ripple-white">生成</a>
                 <a id="query" href="./query" class="mdui-ripple mdui-ripple-white">查询</a>
                 <a id="doc" href="./doc" class="mdui-ripple mdui-ripple-white">文档</a>
             </div>
