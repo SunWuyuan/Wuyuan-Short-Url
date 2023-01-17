@@ -15,7 +15,7 @@
 ### 自动
 Vecel|Netlify
 ---|---
-[![Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/H2Oa/H2O_Short_Url)|[![Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/H2Oa/H2O_Short_Url)
+[![Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/H2Oye/H2O_Short_Url)|[![Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/H2Oye/H2O_Short_Url)
 ## 安装
 ### 手动
 首先修改config.py,然后运行/执行
