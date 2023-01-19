@@ -1,14 +1,13 @@
         </div>
         
         <script type="text/javascript">
-            function activeNav(parentId, childId) {
-                let nav = document.getElementById(parentId).children;
+            function activeNav(id) {
+                let navs = document.getElementById('nav').children;
                 document.getElementById(childId).className = 'mdui-ripple mdui-ripple-white mdui-tab-active';
-                Object.keys(nav).forEach(function(key){
-                    if (nav[key].id != childId) {
-                        let singleNav = document.getElementById(nav[key].id);
-                        if (singleNav != null) {
-                            singleNav.className = 'mdui-ripple mdui-ripple-white';
+                Object.keys(navs).forEach((key) => {
+                    if (nav[key].getAttribute('id') != id) {
+                        if (navs[key] !== null) {
+                            navs[key].className = 'mdui-ripple mdui-ripple-white';
                         }
                     }
                 });
@@ -19,7 +18,7 @@
                 if (!id) {
                     id = 'generate';
                 }
-                activeNav('nav', id);
+                activeNav(id);
             }
 
             $(document).ready(function() {

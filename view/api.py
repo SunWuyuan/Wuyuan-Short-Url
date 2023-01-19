@@ -6,9 +6,9 @@ from modular import core, auxiliary, database
 import config
 import time
 
-API_APP = Blueprint('API_APP', __name__)
+API_APP = Blueprint('API_APP', __name__, url_prefix='/api')
 
-@API_APP.route('/api/generate', methods=['GET', 'POST'])
+@API_APP.route('/generate', methods=['GET', 'POST'])
 def generate():
     parameter = core.getRequestParameter(request)
     domain = parameter.get('domain')
@@ -28,10 +28,8 @@ def generate():
     db = database.DataBase()
 
     domains = db.queryDomain()
-
     if domain not in domains:
         return core.GenerateResponseResult().error(110, '域名错误')
-    
     if config.AUTOMATIC:
         protocol = 'https'
     else:
@@ -70,12 +68,12 @@ def generate():
 
         return core.GenerateResponseResult().success(f'{protocol}://{domain}/{signature}')
 
-@API_APP.route('/api/get_domain', methods=['GET', 'POST'])
+@API_APP.route('/get_domain', methods=['GET', 'POST'])
 def getDomain():
     db = database.DataBase()
     return core.GenerateResponseResult().success(list(db.queryDomain().keys()))
 
-@API_APP.route('/api/get', methods=['GET', 'POST'])
+@API_APP.route('/get', methods=['GET', 'POST'])
 def get():
     parameter = core.getRequestParameter(request)
     shortUrl = parameter.get('shortUrl')
@@ -109,7 +107,7 @@ def get():
 @API_APP.route('/<signature>/', methods=['GET', 'POST'])
 def shortUrlRedirect(signature):
     db = database.DataBase()
-    
+
     query = db.queryUrlBySignature(request.host, signature)
     if query:
         validDay = query.get('valid_day')
