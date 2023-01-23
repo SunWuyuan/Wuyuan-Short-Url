@@ -14,7 +14,7 @@
 如果需要在Windows/Linux上部署,Windows运行main.py,Linux执行gunicorn main:app -c gunicorn.py.
 ### 自动
 Vecel|Netlify|Deta
----|---|---|---
+---|---|---
 [![Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/H2Oye/H2O-Short-Url)|[![Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/H2Oye/H2O-Short-Url)|[![Deta](https://button.deta.dev/1/svg)](https://go.deta.dev/deploy?repo=https://github.com/H2Oye/H2O-Short-Url)
 ## 安装
 ### 手动
