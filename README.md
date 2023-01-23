@@ -14,8 +14,8 @@
 如果需要在Windows/Linux上部署,Windows运行main.py,Linux执行gunicorn main:app -c gunicorn.py.
 ### 自动
 Vecel|Netlify|Deta
----|---|---
-[![Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/H2Oye/H2O_Short_Url)|[![Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/H2Oye/H2O_Short_Url)|[![Deta](https://button.deta.dev/1/svg)](https://go.deta.dev/deploy?repo=https://github.com/H2Oye/H2O_Short_Url)
+---|---|---|---
+[![Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/H2Oye/H2O-Short-Url)|[![Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/H2Oye/H2O-Short-Url)|[![Deta](https://button.deta.dev/1/svg)](https://go.deta.dev/deploy?repo=https://github.com/H2Oye/H2O-Short-Url)
 ## 安装
 ### 手动
 首先修改config.py,然后运行/执行
@@ -25,7 +25,7 @@ Vecel|Netlify|Deta
 2. 然后添加环境变量,DATABASE_HOST(数据库地址),DATABASE_PORT(数据库端口),DATABASE_USERNAME(数据库用户名),DATABASE_PASSWORD(数据库密码),DATABASE_NAME(数据库名称),DATABASE_PREFIX(数据库前缀,推荐使用h2o_short_url_),DATABASE_SSL_CA_PATH(CA路径),DATABASE_SSL_KEY_PATH(KEY路径),DATABASE_SSL_CERT_PATH(CERT路径),三种证书路径无则空.
 ![图像1](https://s1.ax1x.com/2023/01/16/pSl2iqK.jpg)
 ![图像2](https://s1.ax1x.com/2023/01/16/pSl2AaD.jpg)
-3. 最后重新部署.
+1. 最后重新部署.
 ![图像3](https://s1.ax1x.com/2023/01/16/pSl2Pr6.jpg)
 ![图像4](https://s1.ax1x.com/2023/01/16/pSl2kVO.jpg)
 ### Deta
