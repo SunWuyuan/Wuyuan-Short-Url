@@ -32,5 +32,5 @@
             "description": "数据库前缀,推荐使用h2o_short_url_",
             "required": true 
         }
-    ]      
+    ]
 }
