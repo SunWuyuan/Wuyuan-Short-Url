@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-from flask import Blueprint, redirect, request
+from flask import Blueprint, request
 from modular import core, auxiliary, database
 import config
-import time
 
 API_APP = Blueprint('API_APP', __name__, url_prefix='/api')
 
@@ -17,7 +16,7 @@ def generate():
     validDay = parameter.get('validDay') or 0
 
     if not domain or not longUrl or (validDay and (type(validDay) == str and not validDay.isdigit())):
-        return core.GenerateResponseResult().error(110, '参数错误')
+        return core.GenerateResponseResult().error(110, '参数不能为空')
     elif not auxiliary.isUrl(longUrl):
         return core.GenerateResponseResult().error(110, '长网址需完整')
     elif validDay:
@@ -52,9 +51,6 @@ def generate():
             return core.GenerateResponseResult().error(110, '特征码已存在')
         
         id_ = db.insert('custom', domain, longUrl, validDay)
-        db.update(id_, signature)
-
-        return core.GenerateResponseResult().success(f'{protocol}://{domain}/{signature}')
     else:
         query = db.queryUrlByLongUrl(domain, longUrl)
         if query:
@@ -64,9 +60,8 @@ def generate():
         signature = auxiliary.base62Encode(id_)
         if db.queryUrlBySignature(domain, signature):
             signature += 'a'
-        db.update(id_, signature)
-
-        return core.GenerateResponseResult().success(f'{protocol}://{domain}/{signature}')
+    db.update(id_, signature)
+    return core.GenerateResponseResult().success(f'{protocol}://{domain}/{signature}')
 
 @API_APP.route('/get_domain', methods=['GET', 'POST'])
 def getDomain():
@@ -102,22 +97,3 @@ def get():
         'timestmap': query.get('timestmap')
     }
     return core.GenerateResponseResult().success(info)
-
-@API_APP.route('/<signature>', methods=['GET', 'POST'])
-@API_APP.route('/<signature>/', methods=['GET', 'POST'])
-def shortUrlRedirect(signature):
-    db = database.DataBase()
-
-    query = db.queryUrlBySignature(request.host, signature)
-    if query:
-        validDay = query.get('valid_day')
-        if validDay:
-            validDayTimestamp = validDay * 86400000
-            expireTimestmap = query.get('timestmap') + validDayTimestamp
-            if int(time.time()) > expireTimestmap:
-                db.delete(query.get('id'))
-                return redirect(request.host_url)
-        
-        db.addCount(request.host, signature)
-        return redirect(query.get('long_url'))
-    return redirect(request.host_url)

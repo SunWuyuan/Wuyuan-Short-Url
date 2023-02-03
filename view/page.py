@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect
 from modular import database
 import datetime
+import time
 
 PAGE_APP = Blueprint('PAGE_APP', __name__)
 
@@ -42,3 +43,22 @@ def doc():
         description=info.get('description'),
         nowYear=datetime.datetime.now().year
     )
+
+@PAGE_APP.route('/<signature>', methods=['GET', 'POST'])
+@PAGE_APP.route('/<signature>/', methods=['GET', 'POST'])
+def shortUrlRedirect(signature):
+    db = database.DataBase()
+    
+    query = db.queryUrlBySignature(request.host, signature)
+    if query:
+        validDay = query.get('valid_day')
+        if validDay:
+            validDayTimestamp = validDay * 86400000
+            expireTimestmap = query.get('timestmap') + validDayTimestamp
+            if int(time.time()) > expireTimestmap:
+                db.delete(query.get('id'))
+                return redirect(request.host_url)
+        
+        db.addCount(request.host, signature)
+        return redirect(query.get('long_url'))
+    return redirect(request.host_url)

@@ -23,11 +23,11 @@ if AUTOMATIC:
     }
 else:
     DATABASE = {
-        'host': '121.4.52.251',
+        'host': '127.0.0.1',
         'port': 3306,
-        'username': 'h2o_short_url',
-        'password': 'xhxd6Fip7ZcdhmG4',
-        'name': 'h2o_short_url',
+        'username': 'root',
+        'password': 'root',
+        'name': 'db',
         'prefix': 'h2o_short_url_',
         'ssl': {
             'caPath': '',
