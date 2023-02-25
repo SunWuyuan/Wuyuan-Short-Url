@@ -3,7 +3,7 @@
 ## 介绍
 一款部署在多种平台,基于Python-Flask框架,开发的短网址程序.
 ## 演示站
-[https://url.h2oa.icu](https://url.h2oa.icu)
+[https://url.h2oye.com](https://url.h2oye.com)
 ## 需求
 1. 平台: Windows/Linux/Vercel/Netlify/Deta.
 2. 语言: Python.

@@ -18,13 +18,16 @@ class GenerateResponseResult:
     def __init__(self):
         pass
 
-    def error(self, code, message):
-        result = {
-            'code': code,
-            'message': message
-        }
-        self.result = result
-        return self._json()
+    def _json(self):
+        result = json.dumps(self.result)
+        response = make_response(result)
+        response.mimetype = 'application/json; charset=utf-8'
+        return response
+
+    def custom(self, contentType, data):
+        response = make_response(data)
+        response.headers['Content-Type'] = contentType
+        return response
 
     def success(self, data):
         result = {
@@ -34,14 +37,11 @@ class GenerateResponseResult:
         }
         self.result = result
         return self._json()
-    
-    def _json(self):
-        result = json.dumps(self.result)
-        response = make_response(result)
-        response.mimetype = 'application/json; charset=utf-8'
-        return response
-    
-    def custom(self, contentType, data):
-        response = make_response(data)
-        response.headers['Content-Type'] = contentType
-        return response
+
+    def error(self, code, message):
+        result = {
+            'code': code,
+            'message': message
+        }
+        self.result = result
+        return self._json()

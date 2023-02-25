@@ -5,7 +5,7 @@ import os
 
 HOST = '0.0.0.0'
 PORT = 5000
-AUTOMATIC = True #手动部署为False,自动为True
+AUTOMATIC = False #手动部署为False,自动为True
 
 if AUTOMATIC:
     DATABASE = {
@@ -23,11 +23,11 @@ if AUTOMATIC:
     }
 else:
     DATABASE = {
-        'host': '127.0.0.1',
+        'host': '121.4.52.251',
         'port': 3306,
-        'username': 'root',
-        'password': 'root',
-        'name': 'db',
+        'username': 'h2o_short_url',
+        'password': 'xhxd6Fip7ZcdhmG4',
+        'name': 'h2o_short_url',
         'prefix': 'h2o_short_url_',
         'ssl': {
             'caPath': '',
