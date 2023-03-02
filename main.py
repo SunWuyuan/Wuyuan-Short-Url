@@ -14,7 +14,7 @@ app.register_blueprint(API_APP)
 app.register_blueprint(PAGE_APP)
 
 @app.errorhandler(500)
-def errorhandler500(error):
+def error500(error):
     return core.GenerateResponseResult().error(500, '未知错误')
 
 def initialization():
