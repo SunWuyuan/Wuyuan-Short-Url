@@ -14,7 +14,7 @@ def getRequestParameter(request):
             data = request.get_json()
     return dict(data)
 
-class GenerateResponseResult:
+class GenerateResponse:
     def __init__(self):
         pass
 
