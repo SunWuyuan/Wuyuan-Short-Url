@@ -24,19 +24,19 @@ class GenerateResponse:
         response.mimetype = 'application/json; charset=utf-8'
         return response
 
+    def error(self, code, message):
+        result = {
+            'code': code,
+            'message': message
+        }
+        self.result = result
+        return self._json()
+
     def success(self, data):
         result = {
             'code': 200,
             'message': '成功',
             'data': data
-        }
-        self.result = result
-        return self._json()
-
-    def error(self, code, message):
-        result = {
-            'code': code,
-            'message': message
         }
         self.result = result
         return self._json()
