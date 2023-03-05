@@ -18,37 +18,37 @@ def generate():
     if not domain or not longUrl or (validDay and (type(validDay) == str and not validDay.isdigit())):
         return core.GenerateResponse().error(110, '参数不能为空')
     elif not auxiliary.isUrl(longUrl):
-        return core.GenerateResponse().error(110, '长网址需完整')
+        return core.GenerateResponse().error(110, 'longUrl需完整')
     elif validDay:
         validDay = int(validDay)
         if validDay < 0 or validDay > 365:
-            return core.GenerateResponse().error(110, '仅能填0~365,0代表永久')
+            return core.GenerateResponse().error(110, 'validDay仅能填0~365,0代表永久')
     
     db = database.DataBase()
-
+    
     domains = db.queryDomain()
     if domain not in domains:
-        return core.GenerateResponse().error(110, '域名错误')
+        return core.GenerateResponse().error(110, 'domain不存在')
     if config.AUTOMATIC:
         protocol = 'https'
     else:
         protocol = domains.get(domain)
-
+    
     if signature:
         if not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
-            return core.GenerateResponse().error(110, '特征码仅能为数字和字母')
+            return core.GenerateResponse().error(110, 'signature仅能为数字和字母')
         elif len(signature) < 1 or len(signature) > 5:
-            return core.GenerateResponse().error(110, '特征码长度仅能为1~5')
+            return core.GenerateResponse().error(110, 'signature长度仅能为1~5')
         elif signature.lower() == 'api':
-            return core.GenerateResponse().error(110, '特征码不能为api')
+            return core.GenerateResponse().error(110, 'signature不能为api')
         elif signature.lower() == 'index':
-            return core.GenerateResponse().error(110, '特征码不能为index')
+            return core.GenerateResponse().error(110, 'signature不能为index')
         elif signature.lower() == 'query':
-            return core.GenerateResponse().error(110, '特征码不能为query')
+            return core.GenerateResponse().error(110, 'signature不能为query')
         elif signature.lower() == 'doc':
-            return core.GenerateResponse().error(110, '特征码不能为doc')
+            return core.GenerateResponse().error(110, 'signature不能为doc')
         elif db.queryUrlBySignature(domain, signature):
-            return core.GenerateResponse().error(110, '特征码已存在')
+            return core.GenerateResponse().error(110, 'signature已存在')
         
         id_ = db.insert('custom', domain, longUrl, validDay)
     else:
@@ -74,9 +74,9 @@ def get():
     shortUrl = parameter.get('shortUrl')
 
     if not shortUrl:
-        return core.GenerateResponse().error(110, '参数错误')
+        return core.GenerateResponse().error(110, '参数不能为空')
     elif not auxiliary.isUrl(shortUrl):
-        return core.GenerateResponse().error(110, '短网址需要完整')
+        return core.GenerateResponse().error(110, 'shortUrl需要完整')
 
     shortUrl = shortUrl.split('/')
     domain = shortUrl[2]
@@ -85,10 +85,10 @@ def get():
     db = database.DataBase()
 
     if domain not in db.queryDomain():
-        return core.GenerateResponse().error(110, '短网址错误')
+        return core.GenerateResponse().error(110, 'shortUrl错误')
     query = db.queryUrlBySignature(domain, signature)
     if not query:
-        return core.GenerateResponse().error(110, '短网址错误')
+        return core.GenerateResponse().error(110, 'shortUrl错误')
     
     info = {
         'longUrl': query.get('long_url'),
