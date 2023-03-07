@@ -9,7 +9,7 @@ import time
 PAGE_APP = Blueprint('PAGE_APP', __name__)
 
 @PAGE_APP.route('/', methods=['GET', 'POST'])
-def generate():
+def generate() -> str:
     db = database.DataBase()
     info = db.queryWebsiteInfo()
     return render_template(
@@ -21,7 +21,7 @@ def generate():
     )
 
 @PAGE_APP.route('/query', methods=['GET', 'POST'])
-def query():
+def query() -> str:
     db = database.DataBase()
     info = db.queryWebsiteInfo()
     return render_template(
@@ -33,7 +33,7 @@ def query():
     )
 
 @PAGE_APP.route('/doc', methods=['GET', 'POST'])
-def doc():
+def doc() -> str:
     db = database.DataBase()
     info = db.queryWebsiteInfo()
     return render_template(
@@ -46,7 +46,7 @@ def doc():
 
 @PAGE_APP.route('/<signature>', methods=['GET', 'POST'])
 @PAGE_APP.route('/<signature>/', methods=['GET', 'POST'])
-def shortUrlRedirect(signature):
+def shortUrlRedirect(signature) -> str:
     db = database.DataBase()
     
     query = db.queryUrlBySignature(request.host, signature)

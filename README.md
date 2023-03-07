@@ -6,7 +6,7 @@
 [https://url.h2oye.com](https://url.h2oye.com)
 ## 需求
 1. 平台: Windows/Linux/Vercel/Netlify/Deta.
-2. 语言: Python.
+2. 语言: Python3.8+.
 3. 包: gunicorn,gevent,flask,flask_cors,pymysql.
 4. 数据库: MySql.
 ## 部署

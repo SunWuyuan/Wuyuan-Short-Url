@@ -7,7 +7,7 @@ import re
 import time
 
 class DataBase:
-    def __init__(self):
+    def __init__(self) -> None:
         self.prefix = config.DATABASE.get('prefix')
         self.connect = pymysql.connect(
             host=config.DATABASE.get('host'),
@@ -21,11 +21,11 @@ class DataBase:
         )
         self.cursor = self.connect.cursor(pymysql.cursors.DictCursor)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.cursor.close()
         self.connect.close()
 
-    def existenceTable(self, name):
+    def existenceTable(self, name: str) -> bool:
         sql = 'show tables'
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
@@ -33,7 +33,7 @@ class DataBase:
         data = [re.sub("'", '', data_count) for data_count in data]
         return f'{self.prefix}{name}' in data
 
-    def createCoreTable(self):
+    def createCoreTable(self) -> None:
         sql = f'''
             CREATE TABLE `{self.prefix}core` (
                 `key_` varchar(255) NOT NULL,
@@ -68,7 +68,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
 
-    def createDomainTable(self):
+    def createDomainTable(self) -> None:
         sql = f'''
             CREATE TABLE `{self.prefix}domain` (
                 `domain` varchar(255) NOT NULL,
@@ -78,7 +78,7 @@ class DataBase:
         '''
         self.cursor.execute(sql)
 
-    def createUrlTable(self):
+    def createUrlTable(self) -> None:
         sql = f'''
             CREATE TABLE `{self.prefix}url` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -94,7 +94,7 @@ class DataBase:
         '''
         self.cursor.execute(sql)
 
-    def insert(self, type_, domain, longUrl, validDay):
+    def insert(self, type_: str, domain: str, longUrl: str, validDay: int) -> int:
         sql = f'''
             INSERT INTO {self.prefix}url (type_, domain, long_url, valid_day, count, timestmap)
             VALUES(
@@ -111,7 +111,7 @@ class DataBase:
         self.connect.commit()
         return id_
     
-    def update(self, id_, signature):
+    def update(self, id_: int, signature: str) -> None:
         sql = f'''
             UPDATE {self.prefix}url 
             SET signature = "{signature}" 
@@ -122,7 +122,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
     
-    def delete(self, id_):
+    def delete(self, id_: int) -> None:
         sql = f'''
             DELETE 
             FROM
@@ -134,7 +134,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
 
-    def addCount(self, domain, signature):
+    def addCount(self, domain: str, signature: str) -> None:
         sql = f'''
             UPDATE {self.prefix}url 
             SET count = count + 1 
@@ -146,7 +146,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
     
-    def queryWebsiteInfo(self):
+    def queryWebsiteInfo(self) -> dict:
         sql = f'''
             SELECT
                 * 
@@ -165,7 +165,7 @@ class DataBase:
             data_[datum.get('key_')] = datum.get('value_')
         return data_
 
-    def queryDomain(self):
+    def queryDomain(self) -> dict:
         sql = f'''
             SELECT
                 * 
@@ -179,7 +179,7 @@ class DataBase:
             data_[datum.get('domain')] = datum.get('protocol')
         return data_
 
-    def queryUrlByLongUrl(self, domain, longUrl):
+    def queryUrlByLongUrl(self, domain: str, longUrl: str) -> bool:
         sql = f'''
             SELECT
                 * 
@@ -196,7 +196,7 @@ class DataBase:
             return data[0]
         return False
 
-    def queryUrlBySignature(self, domain, signature):
+    def queryUrlBySignature(self, domain: str, signature: str) -> bool:
         sql = f'''
             SELECT
                 * 

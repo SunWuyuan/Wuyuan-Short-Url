@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-from flask import make_response
+from flask import request, make_response, Response
 import json
 
-def getRequestParameter(request):
+def getRequestParameter(request: request) -> dict:
     data = {}
     if request.method == 'GET':
         data = request.args
@@ -15,26 +15,26 @@ def getRequestParameter(request):
     return dict(data)
 
 class GenerateResponse:
-    def __init__(self):
+    def __init__(self) -> None:
         self.response = {}
 
-    def _json(self):
+    def _json(self) -> Response:
         responseJSON = json.dumps(self.response, ensure_ascii=False)
         response_ = make_response(responseJSON)
         response_.mimetype = 'application/json; charset=utf-8'
         return response_
 
-    def error(self, code, message):
+    def error(self, code: int, message: str) -> Response:
         self.response = {
             'code': code,
             'message': message
         }
         return self._json()
 
-    def success(self, data):
+    def success(self, data) -> Response:
         self.response = {
             'code': 200,
-            'message': '成功',
+            'message': 'success',
             'data': data
         }
         return self._json()

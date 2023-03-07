@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 from modular import core, auxiliary, database
 import config
 
 API_APP = Blueprint('API_APP', __name__, url_prefix='/api')
 
 @API_APP.route('/generate', methods=['GET', 'POST'])
-def generate():
+def generate() -> Response:
     parameter = core.getRequestParameter(request)
     domain = parameter.get('domain')
     longUrl = parameter.get('longUrl')
@@ -64,12 +64,12 @@ def generate():
     return core.GenerateResponse().success(f'{protocol}://{domain}/{signature}')
 
 @API_APP.route('/get_domain', methods=['GET', 'POST'])
-def getDomain():
+def getDomain() -> Response:
     db = database.DataBase()
     return core.GenerateResponse().success(list(db.queryDomain().keys()))
 
 @API_APP.route('/get', methods=['GET', 'POST'])
-def get():
+def get() -> Response:
     parameter = core.getRequestParameter(request)
     shortUrl = parameter.get('shortUrl')
 

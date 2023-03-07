@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-from flask import Flask
+from flask import Flask, Response
 import flask_cors
 import config
 from modular import database, core
@@ -14,10 +14,10 @@ app.register_blueprint(API_APP)
 app.register_blueprint(PAGE_APP)
 
 @app.errorhandler(500)
-def error500(error):
+def error500(error: Exception) -> Response:
     return core.GenerateResponse().error(500, '未知错误')
 
-def initialization():
+def initialization() -> None:
     print('''
  _   _ ____   ___    ____  _                _     _   _      _ 
 | | | |___ \ / _ \  / ___|| |__   ___  _ __| |_  | | | |_ __| |
