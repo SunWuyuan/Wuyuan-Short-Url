@@ -62,7 +62,7 @@ class DataBase:
         sql = f'''
             INSERT INTO `{self.prefix}core` (key_, value_)
             VALUES(
-                "description", "一款基于Python-Flask框架,开发的短网址程序."
+                "description", "一切是那么的简约高效."
             );
         '''
         self.cursor.execute(sql)

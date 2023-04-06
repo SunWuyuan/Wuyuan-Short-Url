@@ -2,7 +2,7 @@
 # Author: XiaoXinYo
 
 from flask import Blueprint, render_template, request, redirect
-from modular import database
+from module import database
 import datetime
 import time
 

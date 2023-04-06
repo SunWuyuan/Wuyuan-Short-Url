@@ -2,7 +2,7 @@
 # Author: XiaoXinYo
 
 from flask import Blueprint, request, Response
-from modular import core, auxiliary, database
+from module import core, auxiliary, database
 import config
 
 API_APP = Blueprint('API_APP', __name__, url_prefix='/api')

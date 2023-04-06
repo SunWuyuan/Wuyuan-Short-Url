@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
+from typing import Any
 from flask import request, make_response, Response
 import json
 
@@ -31,7 +32,7 @@ class GenerateResponse:
         }
         return self._json()
 
-    def success(self, data) -> Response:
+    def success(self, data: Any) -> Response:
         self.response = {
             'code': 200,
             'message': 'success',

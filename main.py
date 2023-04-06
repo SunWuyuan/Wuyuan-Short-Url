@@ -4,7 +4,7 @@
 from flask import Flask, Response
 import flask_cors
 import config
-from modular import database, core
+from module import database, core
 from view.api import API_APP
 from view.page import PAGE_APP
 
