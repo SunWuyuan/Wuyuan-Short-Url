@@ -19,7 +19,7 @@ class GenerateResponse:
     def __init__(self) -> None:
         self.response = {}
 
-    def _json(self) -> Response:
+    def json(self) -> Response:
         responseJSON = json.dumps(self.response, ensure_ascii=False)
         response_ = make_response(responseJSON)
         response_.mimetype = 'application/json; charset=utf-8'
@@ -30,7 +30,7 @@ class GenerateResponse:
             'code': code,
             'message': message
         }
-        return self._json()
+        return self.json()
 
     def success(self, data: Any) -> Response:
         self.response = {
@@ -38,4 +38,4 @@ class GenerateResponse:
             'message': 'success',
             'data': data
         }
-        return self._json()
+        return self.json()
