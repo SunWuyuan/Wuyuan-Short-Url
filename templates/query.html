@@ -28,11 +28,10 @@
                         
                         return false;
                     }
-
-                    let postData = {
+                    
+                    request('post', './api/get', {
                         'shortUrl': shortUrl
-                    };
-                    request('post', './api/get', postData)
+                    })
                         .then(function(response) {
                             let data = response.data;
                             if (data.code === 200) {

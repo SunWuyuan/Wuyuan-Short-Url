@@ -28,7 +28,8 @@ class GenerateResponse:
     def error(self, code: int, message: str) -> Response:
         self.response = {
             'code': code,
-            'message': message
+            'message': message,
+            'data': None
         }
         return self.json()
 

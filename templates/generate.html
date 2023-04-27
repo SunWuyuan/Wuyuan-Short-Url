@@ -57,14 +57,13 @@
                         
                         return false;
                     }
-
-                    let postData = {
+                    
+                    request('post', './api/generate', {
                         'domain': domain,
                         'longUrl': longUrl,
                         'signature': signature,
                         'validDay': Number(validDay)
-                    };
-                    request('post', './api/generate', postData)
+                    })
                         .then(function(response) {
                             let data = response.data;
                             if (data.code === 200) {

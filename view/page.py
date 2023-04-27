@@ -32,18 +32,6 @@ def query() -> str:
         nowYear=datetime.datetime.now().year
     )
 
-@PAGE_APP.route('/doc', methods=['GET', 'POST'])
-def doc() -> str:
-    db = database.DataBase()
-    info = db.queryWebsiteInfo()
-    return render_template(
-        'doc.html',
-        title= info.get('title'),
-        keyword=info.get('keyword'),
-        description=info.get('description'),
-        nowYear=datetime.datetime.now().year
-    )
-
 @PAGE_APP.route('/<signature>', methods=['GET', 'POST'])
 @PAGE_APP.route('/<signature>/', methods=['GET', 'POST'])
 def shortUrlRedirect(signature) -> str:

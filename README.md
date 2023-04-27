@@ -5,14 +5,14 @@
 ## 演示站
 [https://url.h2oye.com](https://url.h2oye.com)
 ## 需求
-1. 平台: Windows/Linux/Vercel/Netlify/Deta.
+1. 平台: Linux/Vercel/Netlify/Deta.
 2. 语言: Python3.8+.
-3. 包: gunicorn,gevent,flask,flask_cors,pymysql.
+3. 包: gunicorn,gevent,flask,flask_cors,flask_frozen,pymysql.
 4. 数据库: MySql.
 ## 部署
 ### 手动
 1. 修改config.py.
-2. Windows运行main.py,Linux执行gunicorn main:app -c gunicorn.py.
+2. Linux执行gunicorn main:app -c gunicorn.py.
 ### 自动
 Vecel|Netlify|Deta
 ---|---|---
