@@ -14,9 +14,9 @@ def generate() -> str:
     info = db.queryWebsiteInfo()
     return render_template(
         'generate.html',
-        title=info.get('title'),
-        keyword=info.get('keyword'),
-        description=info.get('description'),
+        title=info['title'],
+        keyword=info['keyword'],
+        description=info['description'],
         nowYear=datetime.datetime.now().year
     )
 
@@ -26,9 +26,9 @@ def query() -> str:
     info = db.queryWebsiteInfo()
     return render_template(
         'query.html',
-        title= info.get('title'),
-        keyword=info.get('keyword'),
-        description=info.get('description'),
+        title=info['title'],
+        keyword=info['keyword'],
+        description=info['description'],
         nowYear=datetime.datetime.now().year
     )
 
@@ -39,14 +39,14 @@ def shortUrlRedirect(signature) -> str:
     
     query = db.queryUrlBySignature(request.host, signature)
     if query:
-        validDay = query.get('valid_day')
-        if validDay:
+        validDay = query['valid_day']
+        if validDay != 0:
             validDayTimestamp = validDay * 86400000
-            expireTimestmap = query.get('timestmap') + validDayTimestamp
+            expireTimestmap = query['timestmap'] + validDayTimestamp
             if int(time.time()) > expireTimestmap:
-                db.delete(query.get('id'))
+                db.delete(query['id'])
                 return redirect(request.host_url)
         
         db.addCount(request.host, signature)
-        return redirect(query.get('long_url'))
+        return redirect(query['long_url'])
     return redirect(request.host_url)

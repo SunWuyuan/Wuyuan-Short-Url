@@ -8,16 +8,16 @@ import time
 
 class DataBase:
     def __init__(self) -> None:
-        self.prefix = config.DATABASE.get('prefix')
+        self.prefix = config.DATABASE['prefix']
         self.connect = pymysql.connect(
-            host=config.DATABASE.get('host'),
-            port=int(config.DATABASE.get('port')),
-            user=config.DATABASE.get('username'),
-            passwd=config.DATABASE.get('password'),
-            db=config.DATABASE.get('name'),
-            ssl_ca=config.DATABASE.get('ssl').get('caPath'),
-            ssl_key=config.DATABASE.get('ssl').get('keyPath'),
-            ssl_cert=config.DATABASE.get('ssl').get('certPath')
+            host=config.DATABASE['host'],
+            port=int(config.DATABASE['port']),
+            user=config.DATABASE['username'],
+            passwd=config.DATABASE['password'],
+            db=config.DATABASE['name'],
+            ssl_ca=config.DATABASE['ssl']['caPath'],
+            ssl_key=config.DATABASE['ssl']['keyPath'],
+            ssl_cert=config.DATABASE['ssl']['certPath']
         )
         self.cursor = self.connect.cursor(pymysql.cursors.DictCursor)
 
@@ -162,7 +162,7 @@ class DataBase:
         data = self.cursor.fetchall()
         data_ = {}
         for datum in data:
-            data_[datum.get('key_')] = datum.get('value_')
+            data_[datum['key_']] = datum['value_']
         return data_
 
     def queryDomain(self) -> dict:
@@ -176,7 +176,7 @@ class DataBase:
         data = self.cursor.fetchall()
         data_ = {}
         for datum in data:
-            data_[datum.get('domain')] = datum.get('protocol')
+            data_[datum['domain']] = datum['protocol']
         return data_
 
     def queryUrlByLongUrl(self, domain: str, longUrl: str) -> bool:

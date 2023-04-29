@@ -32,7 +32,7 @@ def generate() -> Response:
     if config.AUTOMATIC:
         protocol = 'https'
     else:
-        protocol = domains.get(domain)
+        protocol = domains[domain]
     
     if signature:
         if not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
@@ -54,7 +54,7 @@ def generate() -> Response:
     else:
         query = db.queryUrlByLongUrl(domain, longUrl)
         if query:
-            return core.GenerateResponse().success(f'{protocol}://{domain}/{query.get("signature")}')
+            return core.GenerateResponse().success(f'{protocol}://{domain}/{query["signature"]}')
         
         id_ = db.insert('system', domain, longUrl, validDay)
         signature = auxiliary.base62Encode(id_)
@@ -91,9 +91,9 @@ def get() -> Response:
         return core.GenerateResponse().error(110, 'shortUrl错误')
     
     info = {
-        'longUrl': query.get('long_url'),
-        'validDay': query.get('valid_day'),
-        'count': query.get('count'),
-        'timestmap': query.get('timestmap')
+        'longUrl': query['long_url'],
+        'validDay': query['valid_day'],
+        'count': query['count'],
+        'timestmap': query['timestmap']
     }
     return core.GenerateResponse().success(info)
