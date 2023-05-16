@@ -28,8 +28,8 @@
             "required": true 
         },
         {
-            "key": "DATABASE_PREFIX",
-            "description": "数据库前缀,推荐使用h2o_short_url_",
+            "key": "DATABASE_TABLE_PREFIX",
+            "description": "数据库表前缀,推荐使用h2o_short_url_",
             "required": true 
         }
     ]

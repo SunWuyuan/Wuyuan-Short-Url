@@ -2,11 +2,11 @@
 # Author: XiaoXinYo
 
 from flask import Flask, Response
-import flask_cors
-import config
 from module import database, core
 from view.api import API_APP
 from view.page import PAGE_APP
+import flask_cors
+import config
 
 app = Flask(__name__)
 flask_cors.CORS(app, resources=r'/*')

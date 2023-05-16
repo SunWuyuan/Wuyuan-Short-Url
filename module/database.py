@@ -8,7 +8,7 @@ import time
 
 class DataBase:
     def __init__(self) -> None:
-        self.prefix = config.DATABASE['prefix']
+        self.tablePrefix = config.DATABASE['tablePrefix']
         self.connect = pymysql.connect(
             host=config.DATABASE['host'],
             port=int(config.DATABASE['port']),
@@ -31,11 +31,11 @@ class DataBase:
         data = self.cursor.fetchall()
         data = re.findall('(\'.*?\')', str(data))
         data = [re.sub("'", '', data_count) for data_count in data]
-        return f'{self.prefix}{name}' in data
+        return f'{self.tablePrefix}{name}' in data
 
     def createCoreTable(self) -> None:
         sql = f'''
-            CREATE TABLE `{self.prefix}core` (
+            CREATE TABLE `{self.tablePrefix}core` (
                 `key_` varchar(255) NOT NULL,
                 `value_` varchar(255) DEFAULT NULL,
                 PRIMARY KEY (`key_`)
@@ -44,7 +44,7 @@ class DataBase:
         self.cursor.execute(sql)
 
         sql = f'''
-            INSERT INTO `{self.prefix}core` (key_, value_)
+            INSERT INTO `{self.tablePrefix}core` (key_, value_)
             VALUES(
                 "title", "氧化氢短网址"
             );
@@ -52,7 +52,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
         sql = f'''
-            INSERT INTO `{self.prefix}core` (key_, value_)
+            INSERT INTO `{self.tablePrefix}core` (key_, value_)
             VALUES(
                 "keyword", "氧化氢短网址"
             );
@@ -60,7 +60,7 @@ class DataBase:
         self.cursor.execute(sql)
         self.connect.commit()
         sql = f'''
-            INSERT INTO `{self.prefix}core` (key_, value_)
+            INSERT INTO `{self.tablePrefix}core` (key_, value_)
             VALUES(
                 "description", "一切是那么的简约高效."
             );
@@ -70,7 +70,7 @@ class DataBase:
 
     def createDomainTable(self) -> None:
         sql = f'''
-            CREATE TABLE `{self.prefix}domain` (
+            CREATE TABLE `{self.tablePrefix}domain` (
                 `domain` varchar(255) NOT NULL,
                 `protocol` varchar(255) DEFAULT NULL,
                 PRIMARY KEY (`domain`) USING BTREE
@@ -80,7 +80,7 @@ class DataBase:
 
     def createUrlTable(self) -> None:
         sql = f'''
-            CREATE TABLE `{self.prefix}url` (
+            CREATE TABLE `{self.tablePrefix}url` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `type_` varchar(255) DEFAULT NULL,
                 `domain` varchar(255) DEFAULT NULL,
@@ -96,7 +96,7 @@ class DataBase:
 
     def insert(self, type_: str, domain: str, longUrl: str, validDay: int) -> int:
         sql = f'''
-            INSERT INTO {self.prefix}url (type_, domain, long_url, valid_day, count, timestmap)
+            INSERT INTO {self.tablePrefix}url (type_, domain, long_url, valid_day, count, timestmap)
             VALUES(
                 "{type_}",
                 "{domain}",
@@ -113,7 +113,7 @@ class DataBase:
     
     def update(self, id_: int, signature: str) -> None:
         sql = f'''
-            UPDATE {self.prefix}url 
+            UPDATE {self.tablePrefix}url 
             SET signature = "{signature}" 
             WHERE
                 id = {id_} 
@@ -126,7 +126,7 @@ class DataBase:
         sql = f'''
             DELETE 
             FROM
-                {self.prefix}url 
+                {self.tablePrefix}url 
             WHERE
                 id = "{id_}" 
             LIMIT 1;
@@ -136,7 +136,7 @@ class DataBase:
 
     def addCount(self, domain: str, signature: str) -> None:
         sql = f'''
-            UPDATE {self.prefix}url 
+            UPDATE {self.tablePrefix}url 
             SET count = count + 1 
             WHERE
                 domain = "{domain}" 
@@ -151,7 +151,7 @@ class DataBase:
             SELECT
                 * 
             FROM
-                {self.prefix}core 
+                {self.tablePrefix}core 
             WHERE
                 key_ = "title" 
                 OR key_ = "keyword" 
@@ -170,7 +170,7 @@ class DataBase:
             SELECT
                 * 
             FROM
-                {self.prefix}domain;
+                {self.tablePrefix}domain;
         '''
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
@@ -184,7 +184,7 @@ class DataBase:
             SELECT
                 * 
             FROM
-                {self.prefix}url 
+                {self.tablePrefix}url 
             WHERE
                 domain = "{domain}" 
                 AND long_url = "{longUrl}" 
@@ -201,7 +201,7 @@ class DataBase:
             SELECT
                 * 
             FROM
-                {self.prefix}url 
+                {self.tablePrefix}url 
             WHERE
                 domain = "{domain}" 
                 AND signature = "{signature}" 
