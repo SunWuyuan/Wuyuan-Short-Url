@@ -11,7 +11,7 @@
 进入文件查看.
 ## 部署
 ### 手动
-1. Linux: 执行`gunicorn main:app -c gunicorn.py.
+1. Linux: 执行`gunicorn main:app -c gunicorn.py`.
 2. 支持Docker.
 ### 自动
 Vecel|Deta
