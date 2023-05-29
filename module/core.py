@@ -17,26 +17,27 @@ def getRequestParameter(request: request) -> dict:
 
 class GenerateResponse:
     def __init__(self) -> None:
-        self.response = {}
+        self.code = 0
+        self.message = ''
+        self.data = None
 
-    def json(self) -> Response:
-        responseJSON = json.dumps(self.response, ensure_ascii=False)
+    def generate(self) -> Response:
+        responseJSON = json.dumps({
+            'code': self.code,
+            'message': self.message,
+            'data': self.data
+        }, ensure_ascii=False)
         response_ = make_response(responseJSON)
         response_.mimetype = 'application/json; charset=utf-8'
         return response_
 
     def error(self, code: int, message: str) -> Response:
-        self.response = {
-            'code': code,
-            'message': message,
-            'data': None
-        }
-        return self.json()
+        self.code = code
+        self.message = message
+        return self.generate()
 
     def success(self, data: Any) -> Response:
-        self.response = {
-            'code': 200,
-            'message': 'success',
-            'data': data
-        }
-        return self.json()
+        self.code = 200
+        self.message = 'success'
+        self.data = data
+        return self.generate()
