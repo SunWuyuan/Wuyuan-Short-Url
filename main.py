@@ -36,4 +36,4 @@ def initialization() -> None:
 
 initialization()
 if __name__ == '__main__':
-    app.run(host=config.HOST, port=config.PORT, debug=True, processes=True)
+    app.run(host=config.HTTP['host'], port=config.HTTP['port'], debug=True)

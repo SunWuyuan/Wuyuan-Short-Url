@@ -3,35 +3,29 @@
 
 import os
 
-HOST = '0.0.0.0' # 监听地址
-PORT = 5000 # 监听端口
 AUTOMATIC = True # 手动部署为False,自动为True
 
-if AUTOMATIC:
-    DATABASE = {
-        'host': os.environ.get('DATABASE_HOST'),
-        'port': os.environ.get('DATABASE_PORT'),
-        'username': os.environ.get('DATABASE_USERNAME'),
-        'password': os.environ.get('DATABASE_PASSWORD'),
-        'name': os.environ.get('DATABASE_NAME'),
-        'tablePrefix': os.environ.get('DATABASE_TABLE_PREFIX'),
-        'ssl': {
-            'caPath': os.environ.get('DATABASE_SSL_CA_PATH'),
-            'keyPath': os.environ.get('DATABASE_SSL_KEY_PATH'),
-            'certPath': os.environ.get('DATABASE_SSL_CERT_PATH')
-        }
+HTTP = {
+    'host': '0.0.0.0', # HTTP地址
+    'port': 80, # HTTP端口
+    'ssl': {
+        'enable': False, # 启用HTTP SSL
+        'keyPath': '', # HTTP SSL Key路径
+        'certPath': '' # HTTP SSL Cert路径
     }
-else:
-    DATABASE = {
-        'host': '127.0.0.1', # 数据库地址
-        'port': 3306, # 数据库端口
-        'username': 'root', # 数据库用户名
-        'password': 'root', # 数据库密码
-        'name': 'h2o_short_url', # 数据库名称
-        'tablePrefix': 'h2o_short_url_', # 数据库表前缀
-        'ssl': {
-            'caPath': '', # SSL CA路径
-            'keyPath': '', # SSL Key路径
-            'certPath': '' # SSL Cert路径
-        }
+}
+
+DATABASE = {
+    'host': os.environ.get('DATABASE_HOST') or '127.0.0.1', # 数据库地址
+    'port': int(os.environ.get('DATABASE_PORT', '3306')) or 3306, # 数据库端口
+    'username': os.environ.get('DATABASE_USERNAME') or 'root', # 数据库用户名
+    'password': os.environ.get('DATABASE_PASSWORD') or 'root', # 数据库密码
+    'name': os.environ.get('DATABASE_NAME') or 'h2o_short_url', # 数据库名称
+    'tablePrefix': os.environ.get('DATABASE_TABLE_PREFIX') or 'h2o_short_url_', # 数据库表前缀
+    'ssl': {
+        'enable': os.environ.get('DATABASE_SSL_ENABLE') or False, # 启用数据库SSL
+        'caPath': os.environ.get('DATABASE_SSL_CA_PATH') or '', # 数据库SSL CA路径
+        'keyPath': os.environ.get('DATABASE_SSL_KEY_PATH') or '', # 数据库SSL Key路径
+        'certPath': os.environ.get('DATABASE_SSL_CERT_PATH') or '' # 数据库SSL Cert路径
     }
+}

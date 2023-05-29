@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 # Author: XiaoXinYo
 
-from config import HOST, PORT
+from config import HTTP
 
 workers = 5
 worker_class = 'gevent'
-bind = f'{HOST}:{PORT}'
+
+bind = f'{HTTP["host"]}:{HTTP["port"]}'
+if HTTP['ssl']['enable']:
+    keyfile = HTTP['ssl']['keyPath']
+    certfile = HTTP['ssl']['certPath']

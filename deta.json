@@ -31,6 +31,26 @@
             "key": "DATABASE_TABLE_PREFIX",
             "description": "数据库表前缀,推荐使用h2o_short_url_",
             "required": true 
+        },
+        {
+            "key": "DATABASE_SSL_ENABLE",
+            "description": "启用数据库SSL,True/False",
+            "required": true
+        },
+        {
+            "key": "DATABASE_SSL_CA_PATH",
+            "description": "数据库SSL CA路径",
+            "required": false
+        },
+        {
+            "key": "DATABASE_SSL_KEY_PATH",
+            "description": "SSL KEY路径",
+            "required": false
+        },
+        {
+            "key": "DATABASE_SSL_CERT_PATH",
+            "description": "SSL CERT路径",
+            "required": false
         }
     ]
 }
