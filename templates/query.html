@@ -25,14 +25,13 @@
                     
                     if (!shortUrl) {
                         mdui.alert('参数不能为空');
-                        
                         return false;
                     }
                     
                     request('post', './api/get', {
                         'shortUrl': shortUrl
                     })
-                        .then(function(response) {
+                        .then((response) => {
                             let data = response.data;
                             if (data.code === 200) {
                                 let data_ = data.data;
@@ -42,12 +41,11 @@
                                 } else {
                                     validDay += '天';
                                 }
-                                mdui.alert('长链接:' + data_.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + data_.count + '<br/>时间:' + timestampToTime(data_.timestmap));
+                                mdui.alert('长链接:' + data_.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + data_.count + '<br/>时间:' + timestampToTime(data_.timestamp));
                             } else {
                                 mdui.alert(data.message);
                             }
                         });
-                    
                     return false;
                 }
             </script>

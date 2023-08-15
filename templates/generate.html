@@ -11,12 +11,12 @@
                 <div class="mdui-textfield mdui-textfield-floating-label">
                     <label class="mdui-textfield-label">特征码</label>
                     <input id="signature" class="mdui-textfield-input" type="text"/>
-                    <div class="mdui-textfield-helper">如需自定义请填写(仅能填1~5位的数字和字母,不能为api,index,query,doc)</div>
+                    <div class="mdui-textfield-helper">如需自定义请填写(仅能填1~5位的数字和字母,不能为api,index,query)</div>
                 </div>
                 
                 <div class="mdui-textfield mdui-textfield-floating-label">
                     <label class="mdui-textfield-label">有效期</label>
-                    <input id="validDay" class="mdui-textfield-input" type="number" required/>
+                    <input id="validDay" class="mdui-textfield-input" type="number" value="0" required/>
                     <div class="mdui-textfield-helper">单位天,仅能填0~365,0代表永久,默认为0</div>
                 </div>
                 
@@ -54,7 +54,6 @@
                     
                     if (!domain || !longUrl) {
                         mdui.alert('参数不能为空');
-                        
                         return false;
                     }
                     
@@ -64,7 +63,7 @@
                         'signature': signature,
                         'validDay': Number(validDay)
                     })
-                        .then(function(response) {
+                        .then((response) => {
                             let data = response.data;
                             if (data.code === 200) {
                                 mdui.dialog({
@@ -72,7 +71,7 @@
                                     buttons: [
                                         {
                                             text: '复制',
-                                            onClick: function(inst){
+                                            onClick: (dialog) => {
                                                 copyText(data.data);
                                                 mdui.snackbar({message: '复制成功'});
                                             }
@@ -86,7 +85,6 @@
                                 mdui.alert(data.message);
                             }
                         });
-                    
                     return false;
                 }
             </script>

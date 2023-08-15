@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
-# Author: XiaoXinYo
-
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, redirect
 from module import core, auxiliary, database
 import config
+import time
 
 API_APP = Blueprint('API_APP', __name__, url_prefix='/api')
+
+@API_APP.route('/get_domain', methods=['GET', 'POST'])
+def getDomain() -> Response:
+    db = database.DataBase()
+    return core.GenerateResponse().success(list(db.queryDomain().keys()))
 
 @API_APP.route('/generate', methods=['GET', 'POST'])
 def generate() -> Response:
@@ -13,13 +16,15 @@ def generate() -> Response:
     domain = parameter.get('domain')
     longUrl = parameter.get('longUrl')
     signature = parameter.get('signature')
-    validDay = parameter.get('validDay') or 0
+    validDay = parameter.get('validDay', '0')
 
-    if not domain or not longUrl or (validDay and (type(validDay) == str and not validDay.isdigit())):
+    if not domain or not longUrl:
         return core.GenerateResponse().error(110, '参数不能为空')
     elif not auxiliary.isUrl(longUrl):
         return core.GenerateResponse().error(110, 'longUrl需完整')
     elif validDay:
+        if not validDay.isdigit():
+            return core.GenerateResponse().error(110, 'validDay仅能为数字')
         validDay = int(validDay)
         if validDay < 0 or validDay > 365:
             return core.GenerateResponse().error(110, 'validDay仅能填0~365,0代表永久')
@@ -45,28 +50,21 @@ def generate() -> Response:
             return core.GenerateResponse().error(110, 'signature不能为index')
         elif signature.lower() == 'query':
             return core.GenerateResponse().error(110, 'signature不能为query')
-        elif signature.lower() == 'doc':
-            return core.GenerateResponse().error(110, 'signature不能为doc')
         elif db.queryUrlBySignature(domain, signature):
             return core.GenerateResponse().error(110, 'signature已存在')
         
-        id_ = db.insert('custom', domain, longUrl, validDay)
+        id_ = db.insertUrl(core.Type.CUSTOM, domain, longUrl, validDay)
     else:
         query = db.queryUrlByLongUrl(domain, longUrl)
         if query:
             return core.GenerateResponse().success(f'{protocol}://{domain}/{query["signature"]}')
         
-        id_ = db.insert('system', domain, longUrl, validDay)
+        id_ = db.insertUrl(core.Type.SYSTEM, domain, longUrl, validDay)
         signature = auxiliary.base62Encode(id_)
         if db.queryUrlBySignature(domain, signature):
             signature += 'a'
-    db.update(id_, signature)
+    db.updateUrl(id_, signature)
     return core.GenerateResponse().success(f'{protocol}://{domain}/{signature}')
-
-@API_APP.route('/get_domain', methods=['GET', 'POST'])
-def getDomain() -> Response:
-    db = database.DataBase()
-    return core.GenerateResponse().success(list(db.queryDomain().keys()))
 
 @API_APP.route('/get', methods=['GET', 'POST'])
 def get() -> Response:
@@ -89,11 +87,30 @@ def get() -> Response:
     query = db.queryUrlBySignature(domain, signature)
     if not query:
         return core.GenerateResponse().error(110, 'shortUrl错误')
-    
+
     info = {
         'longUrl': query['long_url'],
         'validDay': query['valid_day'],
         'count': query['count'],
-        'timestmap': query['timestmap']
+        'timestamp': query['timestamp']
     }
     return core.GenerateResponse().success(info)
+
+@API_APP.route('/<signature>', methods=['GET', 'POST'])
+@API_APP.route('/<signature>/', methods=['GET', 'POST'])
+def shortUrlRedirect(signature) -> Response:
+    db = database.DataBase()
+
+    query = db.queryUrlBySignature(request.host, signature)
+    if not query:
+        return redirect(request.host_url)
+    validDay = query['valid_day']
+    if validDay != 0:
+        validDayTimestamp = validDay * 86400000
+        expireTimestamp = query['timestamp'] + validDayTimestamp
+        if int(time.time()) > expireTimestamp:
+            db.deleteUrl(query['id'])
+            return redirect(request.host_url)
+
+    db.addUrlCount(request.host, signature)
+    return redirect(query['long_url'])
