@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Author: XiaoXinYo
-
 from config import HTTP
 
 workers = 5

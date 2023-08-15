@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-# Author: XiaoXinYo
-
 import os
 
 AUTOMATIC = True # 手动部署为False,自动为True
 
 HTTP = {
     'host': '0.0.0.0', # HTTP地址
-    'port': 80, # HTTP端口
+    'port': 478, # HTTP端口
     'ssl': {
         'enable': False, # 启用HTTP SSL
         'keyPath': '', # HTTP SSL Key路径

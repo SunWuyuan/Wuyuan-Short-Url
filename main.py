@@ -1,21 +1,17 @@
-# -*- coding: utf-8 -*-
-# Author: XiaoXinYo
-
 from flask import Flask, Response
 from module import database, core
-from view.api import API_APP
-from view.page import PAGE_APP
+from view import api, page
 import flask_cors
 import config
 
 app = Flask(__name__)
-flask_cors.CORS(app, resources=r'/*')
-app.register_blueprint(API_APP)
-app.register_blueprint(PAGE_APP)
+flask_cors.CORS(app, supports_credentials=True)
+app.register_blueprint(api.API_APP)
+app.register_blueprint(page.PAGE_APP)
 
 @app.errorhandler(500)
 def error500(error: Exception) -> Response:
-    return core.GenerateResponse().error(500, '未知错误')
+    return core.GenerateResponse().error(500, '未知错误', httpCode=500)
 
 def initialization() -> None:
     print('''

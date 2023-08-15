@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Author: XiaoXinYo
-
 import re
 
 def isUrl(text: str) -> bool:
@@ -11,11 +8,11 @@ def base62Encode(number: int) -> str:
     alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     if number == 0:
         return alphabet[0]
-    infos = []
+    results = []
     base = len(alphabet)
     while number:
         rem = number % base
         number = number // base
-        infos.append(alphabet[rem])
-    infos.reverse()
-    return ''.join(infos)
+        results.append(alphabet[rem])
+    results.reverse()
+    return ''.join(results)

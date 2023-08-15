@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-# Author: XiaoXinYo
-
 from typing import Any
-from flask import request, make_response, Response
-import json
+from flask import request, jsonify, make_response, Response
 
 def getRequestParameter(request: request) -> dict:
     data = {}
@@ -20,20 +16,23 @@ class GenerateResponse:
         self.code = 0
         self.message = ''
         self.data = None
+        self.httpCode = 200
 
     def generate(self) -> Response:
-        responseJSON = json.dumps({
+        responseJson = jsonify({
             'code': self.code,
             'message': self.message,
             'data': self.data
-        }, ensure_ascii=False)
-        response_ = make_response(responseJSON)
+        })
+        response_ = make_response(responseJson)
+        response_.status_code = self.httpCode
         response_.mimetype = 'application/json; charset=utf-8'
         return response_
 
-    def error(self, code: int, message: str) -> Response:
+    def error(self, code: int, message: str, httpCode=200) -> Response:
         self.code = code
         self.message = message
+        self.httpCode = httpCode
         return self.generate()
 
     def success(self, data: Any) -> Response:
@@ -41,3 +40,7 @@ class GenerateResponse:
         self.message = 'success'
         self.data = data
         return self.generate()
+
+class Type:
+    SYSTEM = 0
+    CUSTOM = 1
