@@ -1,18 +1,19 @@
-![Release](https://img.shields.io/badge/Release-1.1.2-blue)
+![Release](https://img.shields.io/badge/Release-1.1.3-blue)
 ---
 ## 介绍
-一款部署在多种平台,基于Python-Flask框架,开发的短网址程序.
+一款基于Python-Flask框架,开发的短网址程序.
 ## 需求
-1. 平台: Linux/Docker/Vercel/Deta.
+1. 平台: Windows/Linux/Docker/Vercel/Deta.
 2. 语言: Python3.8+.
 3. 包: gunicorn,gevent,flask,flask_cors,flask_frozen,pymysql.
-4. 数据库: MySql.
-## 配置(config.py)
-进入文件查看.
+4. 数据库: MySQL.
+## 配置
+查看config.py文件.
 ## 部署
 ### 手动
-1. Linux: 执行`gunicorn main:app -c gunicorn.py`.
-2. 支持Docker.
+1. Windows: 运行wsgi.py文件.
+2. Linux: 执行`gunicorn main:app -c gunicorn.py`命令.
+3. 支持Docker.
 ### 自动
 Vecel|Deta
 ---|---
