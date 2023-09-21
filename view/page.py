@@ -4,7 +4,7 @@ import datetime
 
 PAGE_APP = Blueprint('PAGE_APP', __name__)
 
-@PAGE_APP.route('/', methods=['GET', 'POST'])
+@PAGE_APP.get('/')
 def generate() -> str:
     db = database.DataBase()
     info = db.queryWebsiteInfo()
@@ -16,7 +16,7 @@ def generate() -> str:
         nowYear=datetime.datetime.now().year
     )
 
-@PAGE_APP.route('/query', methods=['GET', 'POST'])
+@PAGE_APP.get('/query')
 def query() -> str:
     db = database.DataBase()
     info = db.queryWebsiteInfo()
