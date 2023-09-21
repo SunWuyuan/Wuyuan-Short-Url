@@ -5,19 +5,18 @@ import time
 
 API_APP = Blueprint('API_APP', __name__, url_prefix='/api')
 
-@API_APP.route('/get_domain', methods=['GET', 'POST'])
+@API_APP.get('/')
 def getDomain() -> Response:
     db = database.DataBase()
     return core.GenerateResponse().success(list(db.queryDomain().keys()))
 
-@API_APP.route('/generate', methods=['GET', 'POST'])
+@API_APP.post('/generate')
 def generate() -> Response:
-    parameter = core.getRequestParameter(request)
+    parameter = request.get_json()
     domain = parameter.get('domain')
     longUrl = parameter.get('longUrl')
     signature = parameter.get('signature')
     validDay = parameter.get('validDay', '0')
-
     if not domain or not longUrl:
         return core.GenerateResponse().error(110, '参数不能为空')
     elif not auxiliary.isUrl(longUrl):
@@ -66,19 +65,13 @@ def generate() -> Response:
     db.updateUrl(id_, signature)
     return core.GenerateResponse().success(f'{protocol}://{domain}/{signature}')
 
-@API_APP.route('/get', methods=['GET', 'POST'])
+@API_APP.get('/get')
 def get() -> Response:
-    parameter = core.getRequestParameter(request)
-    shortUrl = parameter.get('shortUrl')
-
-    if not shortUrl:
+    parameter = request.args
+    domain = parameter.get('domain')
+    signature = parameter.get('signature')
+    if not domain or not signature:
         return core.GenerateResponse().error(110, '参数不能为空')
-    elif not auxiliary.isUrl(shortUrl):
-        return core.GenerateResponse().error(110, 'shortUrl需要完整')
-
-    shortUrl = shortUrl.split('/')
-    domain = shortUrl[2]
-    signature = shortUrl[3]
 
     db = database.DataBase()
 
