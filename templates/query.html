@@ -22,14 +22,15 @@
             <script type="text/javascript">
                 function summit() {
                     let shortUrl = $('#shortUrl').val();
-                    
                     if (!shortUrl) {
                         mdui.alert('参数不能为空');
                         return false;
                     }
-                    
-                    request('post', './api/get', {
-                        'shortUrl': shortUrl
+
+                    let { domain, signature } = analysisUrl(shortUrl);
+                    request('get', './api/get', {
+                        domain: domain,
+                        signature: signature
                     })
                         .then((response) => {
                             let data = response.data;

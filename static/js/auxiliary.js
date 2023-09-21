@@ -8,7 +8,8 @@ function request(method, url, data) {
         axios({
             method: method,
             url: url,
-            data: data
+            params: method === 'get' ? data : null,
+            data: method === 'post' ? data : null,
         })
             .then(function(response) {
                 loadElement.remove();
@@ -28,6 +29,14 @@ function copyText(text) {
     dummy.select();
     document.execCommand('copy');
     document.body.removeChild(dummy);
+}
+
+function analysisUrl(url) {
+    let re = /^((https?:)?\/\/)?([^\/\s]+)(\/\S*)?$/;
+    let matches = url.trim().match(re);
+    let domain = matches[3];
+    let signature = matches[4] ? matches[4].substr(1) : '';
+    return { domain, signature };
 }
 
 function timestampToTime(timestamp) {
