@@ -40,7 +40,3 @@ class GenerateResponse:
         self.message = 'success'
         self.data = data
         return self.generate()
-
-class Type:
-    SYSTEM = 0
-    CUSTOM = 1
