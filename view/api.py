@@ -1,14 +1,13 @@
-from flask import Blueprint, request, Response, redirect
-from module import core, auxiliary, database
+from flask import Blueprint, request, Response
+from module import core, auxiliary, model, database_type
 import config
-import time
 
 API_APP = Blueprint('API_APP', __name__, url_prefix='/api')
 
-@API_APP.get('/')
+@API_APP.get('/get_domain')
 def getDomain() -> Response:
-    db = database.DataBase()
-    return core.GenerateResponse().success(list(db.queryDomain().keys()))
+    data = [item.domain for item in model.Domain.query.all()]
+    return core.GenerateResponse().success(data)
 
 @API_APP.post('/generate')
 def generate() -> Response:
@@ -27,16 +26,18 @@ def generate() -> Response:
         validDay = int(validDay)
         if validDay < 0 or validDay > 365:
             return core.GenerateResponse().error(110, 'validDay仅能填0~365,0代表永久')
-    
-    db = database.DataBase()
-    
-    domains = db.queryDomain()
-    if domain not in domains:
+
+    domain_ = model.Domain.query.filter_by(domain=domain).first()
+    if not domain_:
         return core.GenerateResponse().error(110, 'domain不存在')
     if config.AUTOMATIC:
         protocol = 'https'
     else:
-        protocol = domains[domain]
+        protocol = model.Domain.query.filter_by(id=domain_.id).first().protocol
+        if database_type.Domain(protocol) == database_type.Domain.HTTP:
+            protocol = 'http'
+        else:
+            protocol = 'https'
     
     if signature:
         if not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
@@ -49,20 +50,28 @@ def generate() -> Response:
             return core.GenerateResponse().error(110, 'signature不能为index')
         elif signature.lower() == 'query':
             return core.GenerateResponse().error(110, 'signature不能为query')
-        elif db.queryUrlBySignature(domain, signature):
+        elif model.Url.query.filter_by(domain_id=domain_.id, signature=signature).first():
             return core.GenerateResponse().error(110, 'signature已存在')
-        
-        id_ = db.insertUrl(core.Type.CUSTOM, domain, longUrl, validDay)
+
+        url = model.Url(type_=database_type.Url.CUSTOM, domain_id=domain_.id, long_url=longUrl, valid_day=validDay, signature=signature)
+        model.DB.session.add(url)
+        model.DB.session.commit()
     else:
-        query = db.queryUrlByLongUrl(domain, longUrl)
-        if query:
-            return core.GenerateResponse().success(f'{protocol}://{domain}/{query["signature"]}')
+        url = model.Url.query.filter_by(domain_id=domain_.id, long_url=longUrl).first()
+        if url:
+            return core.GenerateResponse().success(f'{protocol}://{domain}/{url.signature}')
         
-        id_ = db.insertUrl(core.Type.SYSTEM, domain, longUrl, validDay)
+        url = model.Url(type_=database_type.Url.CUSTOM, domain_id=domain_.id, long_url=longUrl, valid_day=validDay)
+        model.DB.session.add(url)
+        model.DB.session.commit()
+
+        id_ = model.Url.query.filter_by(domain_id=domain_.id, long_url=longUrl).first().id
         signature = auxiliary.base62Encode(id_)
-        if db.queryUrlBySignature(domain, signature):
+        if model.Url.query.filter_by(domain_id=domain_.id, signature=signature).first():
             signature += 'a'
-    db.updateUrl(id_, signature)
+        url = model.Url.query.filter_by(id=id_).first()
+        url.signature = signature
+        model.DB.session.commit()
     return core.GenerateResponse().success(f'{protocol}://{domain}/{signature}')
 
 @API_APP.get('/get')
@@ -73,37 +82,17 @@ def get() -> Response:
     if not domain or not signature:
         return core.GenerateResponse().error(110, '参数不能为空')
 
-    db = database.DataBase()
-
-    if domain not in db.queryDomain():
+    domain_ = model.Domain.query.filter_by(domain=domain).first()
+    if not domain_:
         return core.GenerateResponse().error(110, 'shortUrl错误')
-    query = db.queryUrlBySignature(domain, signature)
-    if not query:
+    url = model.Url.query.filter_by(domain_id=domain_.id, signature=signature).first()
+    if not url:
         return core.GenerateResponse().error(110, 'shortUrl错误')
 
     info = {
-        'longUrl': query['long_url'],
-        'validDay': query['valid_day'],
-        'count': query['count'],
-        'timestamp': query['timestamp']
+        'longUrl': url.long_url,
+        'validDay': url.valid_day,
+        'count': url.count,
+        'creationTimestamp': url.creation_timestamp
     }
     return core.GenerateResponse().success(info)
-
-@API_APP.route('/<signature>', methods=['GET', 'POST'])
-@API_APP.route('/<signature>/', methods=['GET', 'POST'])
-def shortUrlRedirect(signature) -> Response:
-    db = database.DataBase()
-
-    query = db.queryUrlBySignature(request.host, signature)
-    if not query:
-        return redirect(request.host_url)
-    validDay = query['valid_day']
-    if validDay != 0:
-        validDayTimestamp = validDay * 86400000
-        expireTimestamp = query['timestamp'] + validDayTimestamp
-        if int(time.time()) > expireTimestamp:
-            db.deleteUrl(query['id'])
-            return redirect(request.host_url)
-
-    db.addUrlCount(request.host, signature)
-    return redirect(query['long_url'])
