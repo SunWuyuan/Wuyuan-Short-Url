@@ -14,8 +14,8 @@
             }
 
             function refreshNav() {
-                id = window.location.pathname.split('/')[1];
-                if (!id) {
+                let id = window.location.pathname.split('/')[1];
+                if (id === 'index' ||!id) {
                     id = 'generate';
                 }
                 activeNav(id);

@@ -1,4 +1,4 @@
-{%include './head.html' %}
+{% include './head.html' %}
             <form>
 
                 <div class="mdui-textfield mdui-textfield-floating-label">
@@ -35,14 +35,14 @@
                         .then((response) => {
                             let data = response.data;
                             if (data.code === 200) {
-                                let data_ = data.data;
-                                let validDay = data_.validDay;
+                                data = data.data;
+                                let validDay = data.validDay;
                                 if (validDay === 0) {
                                     validDay = '永久';
                                 } else {
                                     validDay += '天';
                                 }
-                                mdui.alert('长链接:' + data_.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + data_.count + '<br/>时间:' + timestampToTime(data_.timestamp));
+                                mdui.alert('长链接:' + data.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + data.count + '<br/>时间:' + timestampToTime(data.creationTimestamp));
                             } else {
                                 mdui.alert(data.message);
                             }
@@ -50,4 +50,4 @@
                     return false;
                 }
             </script>
-{%include './foot.html' %}
+{% include './foot.html' %}
