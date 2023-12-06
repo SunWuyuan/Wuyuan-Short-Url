@@ -1,4 +1,4 @@
-![Release](https://img.shields.io/badge/Release-1.1.5-blue)
+![Release](https://img.shields.io/badge/Release-1.1.6-blue)
 ---
 ## 介绍
 一款基于Python-Flask框架,开发的短网址程序.
