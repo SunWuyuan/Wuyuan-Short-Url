@@ -25,7 +25,16 @@ def query() -> str:
         description=model.Core.query.filter_by(name='description').first().content,
         nowYear=datetime.datetime.now().year
     )
-
+@PAGE_APP.route('/doc', methods=['GET', 'POST'])
+def doc() -> str:
+    return render_template(
+        'doc.html',
+        title=model.Core.query.filter_by(name='title').first().content,
+        keyword=model.Core.query.filter_by(name='keyword').first().content,
+        description=model.Core.query.filter_by(name='description').first().content,
+        domain=model.Domain.query.filter_by(id='1').first().domain,
+        nowYear=datetime.datetime.now().year
+    )
 @PAGE_APP.route('/<signature>', methods=['GET', 'POST'])
 @PAGE_APP.route('/<signature>/', methods=['GET', 'POST'])
 def shortUrlRedirect(signature) -> Response:
