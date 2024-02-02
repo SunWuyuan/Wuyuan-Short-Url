@@ -27,9 +27,9 @@ def initialization() -> None:
     with app.app_context():
         model.DB.create_all()
         if not model.Core.query.filter_by(name='title').first():
-            model.DB.session.add(model.Core('title', '悟元'))
+            model.DB.session.add(model.Core('title', '悟元 - 短链接'))
         if not model.Core.query.filter_by(name='keyword').first():
-            model.DB.session.add(model.Core('keyword', '悟元'))
+            model.DB.session.add(model.Core('keyword', '悟元 - 短链接服务'))
         if not model.Core.query.filter_by(name='description').first():
             model.DB.session.add(model.Core('description', '缩短链接.'))
         model.DB.session.commit()
