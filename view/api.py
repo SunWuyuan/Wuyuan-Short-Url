@@ -40,18 +40,18 @@ def generate() -> Response:
             protocol = 'https'
     
     if signature:
-        if not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
-            return core.GenerateResponse().error(110, 'signature仅能为数字和字母')
-        elif len(signature) < 1 or len(signature) > 5:
-            return core.GenerateResponse().error(110, 'signature长度仅能为1~5')
+        #if not signature.isdigit() and not signature.isalpha() and not signature.isalnum():
+        #    return core.GenerateResponse().error(110, 'signature仅能为数字和字母')
+        if len(signature) < 1 or len(signature) > 10:
+            return core.GenerateResponse().error(110, '特征码长度仅能为1~10')
         elif signature.lower() == 'api':
-            return core.GenerateResponse().error(110, 'signature不能为api')
+            return core.GenerateResponse().error(110, '特征码不能为api')
         elif signature.lower() == 'index':
-            return core.GenerateResponse().error(110, 'signature不能为index')
+            return core.GenerateResponse().error(110, '特征码不能为index')
         elif signature.lower() == 'query':
-            return core.GenerateResponse().error(110, 'signature不能为query')
+            return core.GenerateResponse().error(110, '特征码不能为query')
         elif model.Url.query.filter_by(domain_id=domain_.id, signature=signature).first():
-            return core.GenerateResponse().error(110, 'signature已存在')
+            return core.GenerateResponse().error(110, '特征码已存在')
 
         url = model.Url(type_=database_type.Url.CUSTOM, domain_id=domain_.id, long_url=longUrl, valid_day=validDay, signature=signature)
         model.DB.session.add(url)
