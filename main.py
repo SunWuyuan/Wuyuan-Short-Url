@@ -17,19 +17,19 @@ def error500(error: Exception) -> Response:
 
 def initialization() -> None:
     print('''
- _   _ ____   ___    ____  _                _     _   _      _ 
-| | | |___ \ / _ \  / ___|| |__   ___  _ __| |_  | | | |_ __| |
-| |_| | __) | | | | \___ \| '_ \ / _ \| '__| __| | | | | '__| |
-|  _  |/ __/| |_| |  ___) | | | | (_) | |  | |_  | |_| | |  | |
-|_| |_|_____|\___/  |____/|_| |_|\___/|_|   \__|  \___/|_|  |_|
+ ____  _                _     _   _      _ 
+/ ___|| |__   ___  _ __| |_  | | | |_ __| |
+\___ \| '_ \ / _ \| '__| __| | | | | '__| |
+ ___) | | | | (_) | |  | |_  | |_| | |  | |
+|____/|_| |_|\___/|_|   \__|  \___/|_|  |_|
     ''')
 
     with app.app_context():
         model.DB.create_all()
         if not model.Core.query.filter_by(name='title').first():
-            model.DB.session.add(model.Core('title', '悟元短链接'))
+            model.DB.session.add(model.Core('title', '悟元'))
         if not model.Core.query.filter_by(name='keyword').first():
-            model.DB.session.add(model.Core('keyword', '悟元短链接'))
+            model.DB.session.add(model.Core('keyword', '悟元'))
         if not model.Core.query.filter_by(name='description').first():
             model.DB.session.add(model.Core('description', '缩短链接.'))
         model.DB.session.commit()
