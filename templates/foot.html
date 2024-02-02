@@ -1,13 +1,19 @@
         </div>
         
+<style>
+    .md3 {
+      border-radius: 20px;
+    }
+  
+</style>
         <script type="text/javascript">
             function activeNav(id) {
                 let navs = document.getElementById('nav').children;
-                document.getElementById(id).className = 'mdui-ripple mdui-ripple-white mdui-tab-active';
+                document.getElementById(id).className = 'mdui-ripple mdui-ripple-white mdui-tab-active md3';
                 Object.keys(navs).forEach((key) => {
                     if (navs[key].id !== id) {
                         if (navs[key] !== null) {
-                            navs[key].className = 'mdui-ripple mdui-ripple-white';
+                            navs[key].className = 'mdui-ripple mdui-ripple-white md3';
                         }
                     }
                 });

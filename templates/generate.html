@@ -24,11 +24,11 @@
                 
                 <div class="mdui-row-xs-2 mdui-float-right">
                     <div class="mdui-col">
-                        <button class="mdui-btn mdui-btn-raised mdui-ripple" type="reset">重置</button>
+                        <button class="mdui-btn mdui-ripple md3" type="reset">重置</button>
                     </div>
 
                     <div class="mdui-col">
-                        <button id="submit" onclick="return summit()" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">生成</button>
+                        <button id="submit" onclick="return summit()" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent md3">生成</button>
                     </div>
                 </div>
             <form>
@@ -66,7 +66,7 @@
                             let data = response.data;
                             if (data.code === 200) {
                                 mdui.dialog({
-                                    content: '短链接:' + data.data,
+                                    content: '短链接：' + data.data,
                                     buttons: [
                                         {
                                             text: '复制',
@@ -78,10 +78,27 @@
                                         {
                                             text: '确认',
                                         }
-                                    ]
+                                    ],
+                                    cssClass: 'md3'
                                 });
                             } else {
-                                mdui.alert(data.message);
+                                mdui.dialog({
+                                    content: data.message,
+                                    buttons: [
+                                        {
+                                            text: '复制错误',
+                                            onClick: (dialog) => {
+                                                copyText(data.message);
+                                                mdui.snackbar({message: '复制成功'});
+                                            }
+                                        },
+                                        {
+                                            text: '确认',
+                                        }
+                                    ],
+                                    cssClass: 'md3'
+                                });
+                               
                             }
                         });
                     return false;

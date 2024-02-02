@@ -1,53 +1,85 @@
 {% include './head.html' %}
-            <form>
+<form>
 
-                <div class="mdui-textfield mdui-textfield-floating-label">
-                    <label class="mdui-textfield-label">短网址</label>
-                    <input id="shortUrl" class="mdui-textfield-input" type="text" required/>
-                </div>
-                
-                <br/>
-                
-                <div class="mdui-row-xs-2 mdui-float-right">
-                    <div class="mdui-col">
-                        <button class="mdui-btn mdui-btn-raised mdui-ripple" type="reset">重置</button>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">短网址</label>
+        <input id="shortUrl" class="mdui-textfield-input" type="text" required />
+    </div>
+
+    <br />
+
+    <div class="mdui-row-xs-2 mdui-float-right">
+        <div class="mdui-col">
+            <button class="mdui-btn mdui-ripple md3" type="reset"">重置</button>
                     </div>
 
-                    <div class="mdui-col">
-                        <button id="submit" onclick="return summit()" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">查询</button>
-                    </div>
-                </div>
-            <form>
+                    <div class=" mdui-col">
+                <button id="submit" onclick="return summit()"
+                    class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent md3">查询</button>
+        </div>
+    </div>
+    <form>
 
-            <script type="text/javascript">
-                function summit() {
-                    let shortUrl = $('#shortUrl').val();
-                    if (!shortUrl) {
-                        mdui.alert('参数不能为空');
-                        return false;
-                    }
-
-                    let { domain, signature } = analysisUrl(shortUrl);
-                    request('get', './api/get', {
-                        domain: domain,
-                        signature: signature
-                    })
-                        .then((response) => {
-                            let data = response.data;
-                            if (data.code === 200) {
-                                data = data.data;
-                                let validDay = data.validDay;
-                                if (validDay === 0) {
-                                    validDay = '永久';
-                                } else {
-                                    validDay += '天';
-                                }
-                                mdui.alert('长链接:' + data.longUrl + '<br/>有效期:' + validDay + '<br/>次数:' + data.count + '<br/>时间:' + timestampToTime(data.creationTimestamp));
-                            } else {
-                                mdui.alert(data.message);
-                            }
-                        });
+        <script type="text/javascript">
+            function summit() {
+                let shortUrl = $('#shortUrl').val();
+                if (!shortUrl) {
+                    mdui.alert('参数不能为空');
                     return false;
                 }
-            </script>
-{% include './foot.html' %}
+
+                let { domain, signature } = analysisUrl(shortUrl);
+                request('get', './api/get', {
+                    domain: domain,
+                    signature: signature
+                })
+                    .then((response) => {
+                        let data = response.data;
+                        if (data.code === 200) {
+                            data = data.data;
+                            let validDay = data.validDay;
+                            if (validDay === 0) {
+                                validDay = '永久';
+                            } else {
+                                validDay += '天';
+                            }
+                            mdui.dialog({
+                                content: '长链接：' + data.longUrl + '<br/>有效期：' + validDay + '<br/>访问次数：' + data.count + '<br/>创建时间：' + timestampToTime(data.creationTimestamp),
+                                buttons: [
+                                    {
+                                        text: '复制',
+                                        onClick: (dialog) => {
+                                            copyText('短连接"'+domain+signature+'"的解析结果：原始链接："' + data.longUrl + '"，有效期：' + validDay + '，访问次数：' + data.count + '，创建时间：' + timestampToTime(data.creationTimestamp));
+                                            mdui.snackbar({ message: '复制成功' });
+                                        }
+                                    },
+                                    {
+                                        text: '确认',
+                                    }
+                                ],
+                                cssClass: 'md3'
+                            });
+                           
+                        } else {
+                            mdui.dialog({
+                                content: data.message,
+                                buttons: [
+                                    {
+                                        text: '复制错误',
+                                        onClick: (dialog) => {
+                                            copyText(data.message);
+                                            mdui.snackbar({ message: '复制成功' });
+                                        }
+                                    },
+                                    {
+                                        text: '确认',
+                                    }
+                                ],
+                                cssClass: 'md3'
+                            });
+                        }
+                    });
+                return false;
+            }
+        </script>
+        {% include './foot.html' %}
